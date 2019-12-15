@@ -1,2 +1,2 @@
 # devSocialMedia
-A MERN application development for social media for developers
+A MERN application developed for social media for developers

@@ -1,0 +1,19 @@
+{
+  "name": "devSocialMedia",
+  "version": "1.0.0",
+  "description": "A MERN application developed for social media for developers",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geekyorion/devSocialMedia.git"
+  },
+  "keywords": [],
+  "author": "geekyorion",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/geekyorion/devSocialMedia/issues"
+  },
+  "homepage": "https://github.com/geekyorion/devSocialMedia#readme"
+}
