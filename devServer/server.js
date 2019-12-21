@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
+// import various api(s)
+const user = require("./routes/api/user");
+
 const app = express();
 
 // database config
@@ -20,6 +23,8 @@ mongoose
 app.get("/", (req, res) => {
     res.send("Hello from devServer");
 });
+
+app.use("/api/user", user);
 
 const port = process.env.port || 5000;
 
