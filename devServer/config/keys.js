@@ -1,3 +1,4 @@
 module.exports = {
-    mongoURI: "<your mongoDB URI for the connection>"
+    mongoURI: '<MongoDB URI string for connection>',
+    secretOrKey: '<secret string for JWT token>',
 };
