@@ -12,7 +12,7 @@ const User = require('../../models/User');
  * @access              public
  */
 router.get('/test', (req, res) => {
-    res.json({ message: 'User test API' });
+    res.json({ msg: 'User test API' });
 });
 
 /**
@@ -50,6 +50,36 @@ router.post('/register', (req, res) => {
                     });
                 });
             }
+        });
+});
+
+/**
+ * @route               POST api/user/login
+ * @description         login api for user and returns the JWT Token
+ * @access              public
+ */
+router.post('/login', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    // find the user by using the email sent by the FE
+    User.findOne({ email })
+        .then(user => {
+            // when user is not registered with the email
+            if (!user) {
+                res.status(404).json({ email: 'User not found' });
+            }
+
+            // check for the password
+            bcrypt.compare(password, user.password)
+                .then(isMatch => {
+                    if (isMatch) {
+                        // create the JWT token
+                        res.json({ msg: 'Login successful' });
+                    } else {
+                        res.status(400).json({ password: 'Incorrect password' });
+                    }
+                });
         });
 });
 
