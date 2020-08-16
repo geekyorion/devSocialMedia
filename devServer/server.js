@@ -1,15 +1,24 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyparser = require('body-parser');
 
 // import various api(s)
 const user = require("./routes/api/user");
 
 const app = express();
 
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
+
 // database config
 const db = require("./config/keys").mongoURI;
 
 // database connectivity
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
+
 mongoose
     .connect(db)
     .then(() => {
