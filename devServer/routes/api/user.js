@@ -11,6 +11,9 @@ const keys = require('../../config/keys');
 // Load user model
 const User = require('../../models/User');
 
+// load custom validators
+const validateRegisterInput = require('../../validation/register');
+
 /**
  * @route               GET api/user/test
  * @description         test user route
@@ -26,10 +29,19 @@ router.get('/test', (req, res) => {
  * @access              public
  */
 router.post('/register', (req, res) => {
+    // custom validation of the registration values
+    const { errors, isValid } = validateRegisterInput(req.body);
+
+    if (!isValid) {
+        return res.status(400).json(errors);
+        // do not remove return from here as res.send doesn't kill HTTP thread immediately
+    }
+
     User.findOne({ email: req.body.email })
         .then(user => {
             if (user) {
-                res.status(400).json({ email: 'Email already exists' });
+                errors.email = 'This email already exists';
+                res.status(400).json(errors);
             } else {
                 const avatar = gravatar.url(req.body.email, {
                     s: '200',           // Size
@@ -72,7 +84,7 @@ router.post('/login', (req, res) => {
         .then(user => {
             // when user is not registered with the email
             if (!user) {
-                res.status(404).json({ email: 'User not found' });
+                return res.status(404).json({ email: 'User not found' });
             }
 
             // check for the password
