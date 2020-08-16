@@ -3,6 +3,7 @@ const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 // fetch secret key for generating the token
 const keys = require('../../config/keys');
@@ -104,6 +105,20 @@ router.post('/login', (req, res) => {
                     }
                 });
         });
+});
+
+/**
+ * @route               POST api/user/current
+ * @description         Send the data about current user
+ * @access              private
+ */
+router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
+    // req.user -> it contains the user details sent by passport
+
+    res.json({
+        name: req.user.name,
+        email: req.user.email
+    });
 });
 
 module.exports = router;

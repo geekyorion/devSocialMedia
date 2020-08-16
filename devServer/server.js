@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require('body-parser');
+const passport = require('passport');
 
 // import various api(s)
 const user = require("./routes/api/user");
@@ -27,6 +28,12 @@ mongoose
     .catch(err => {
         console.log(err);
     });
+
+// setting up passport for the validation
+app.use(passport.initialize());
+
+// passport config
+require('./config/passport')(passport);
 
 // API and routes definations
 app.get("/", (req, res) => {
