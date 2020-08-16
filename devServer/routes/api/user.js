@@ -13,6 +13,7 @@ const User = require('../../models/User');
 
 // load custom validators
 const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
 
 /**
  * @route               GET api/user/test
@@ -76,6 +77,13 @@ router.post('/register', (req, res) => {
  * @access              public
  */
 router.post('/login', (req, res) => {
+    // custom validation of the login data
+    const { errors, isValid } = validateLoginInput(req.body);
+
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
     const email = req.body.email;
     const password = req.body.password;
 
@@ -84,7 +92,8 @@ router.post('/login', (req, res) => {
         .then(user => {
             // when user is not registered with the email
             if (!user) {
-                return res.status(404).json({ email: 'User not found' });
+                errors.email = 'User not found';
+                return res.status(404).json(errors);
             }
 
             // check for the password
@@ -113,7 +122,8 @@ router.post('/login', (req, res) => {
                             }
                         );
                     } else {
-                        res.status(400).json({ password: 'Incorrect password' });
+                        errors.password = 'Incorrect password'
+                        res.status(400).json(errors);
                     }
                 });
         });

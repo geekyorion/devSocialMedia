@@ -45,17 +45,17 @@ module.exports = function validateRegisterInput(data) {
         errors.password = 'Password is required';
     }
 
-    // confirmed password validator
+    // confirmed password validator and it should match with password
     if (!Validator.isLength(data.cPassword, { min: 6, max: 30 })) {
         errors.cPassword = 'Confirmed password must be at least 6 characters (max: 30)';
     }
 
-    if (isEmpty(data.cPassword)) {
-        errors.cPassword = 'Confirmed password is required';
-    }
-
     if (data.password !== data.cPassword) {
         errors.cPassword = 'Password and confirmed password should match';
+    }
+
+    if (isEmpty(data.cPassword)) {
+        errors.cPassword = 'Confirmed password is required';
     }
 
     return {
