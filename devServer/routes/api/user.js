@@ -130,7 +130,7 @@ router.post('/login', (req, res) => {
 });
 
 /**
- * @route               POST api/user/current
+ * @route               GET api/user/current
  * @description         Send the data about current user
  * @access              private
  */

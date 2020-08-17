@@ -1,10 +1,11 @@
-const express = require("express");
-const mongoose = require("mongoose");
+const express = require('express');
+const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const passport = require('passport');
 
 // import various api(s)
-const user = require("./routes/api/user");
+const user = require('./routes/api/user');
+const profile = require('./routes/api/profile');
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
 // database config
-const db = require("./config/keys").mongoURI;
+const db = require('./config/keys').mongoURI;
 
 // database connectivity
 mongoose.set('useNewUrlParser', true);
@@ -23,7 +24,7 @@ mongoose.set('useUnifiedTopology', true);
 mongoose
     .connect(db)
     .then(() => {
-        console.log("mongodb connected");
+        console.log('mongodb connected');
     })
     .catch(err => {
         console.log(err);
@@ -36,11 +37,12 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 
 // API and routes definations
-app.get("/", (req, res) => {
-    res.send("Hello from devServer");
+app.get('/', (req, res) => {
+    res.send('Hello from devServer');
 });
 
-app.use("/api/user", user);
+app.use('/api/user', user);
+app.use('/api/profile', profile);
 
 const port = process.env.port || 5000;
 
