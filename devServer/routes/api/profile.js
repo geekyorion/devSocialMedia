@@ -7,6 +7,9 @@ const passport = require('passport');
 const User = require('../../models/User');
 const Profile = require('../../models/Profile');
 
+// load the validator
+const validateProfileInput = require('../../validation/profile');
+
 /**
  * @route               GET api/profile/test
  * @description         test profile route
@@ -24,6 +27,7 @@ router.get('/test', (req, res) => {
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     const errors = {};
     Profile.findOne({ user: req.user.id })
+        .populate('user', ['name', 'avatar'])
         .then(profile => {
             if (!profile) {
                 errors.noprofile = 'Profile is not available for the user';
@@ -40,7 +44,12 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
  * @access              public
  */
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const errors = {};
+    const { errors, isValid } = validateProfileInput(req.body);
+
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
     const profileFields = {};
     profileFields.user = req.user.id;
 
@@ -54,7 +63,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 
     // skills will be in the array (csv)
     if (typeof req.body.skills !== 'undefined') {
-        profileFields.skills = req.body.skills.split(',');
+        profileFields.skills = req.body.skills.split(',').map(data => data.trim());
     }
 
     // social links
@@ -91,7 +100,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
                         new Profile(profileFields).save()
                             .then(profile => res.json(profile));
                     })
-
+                    .catch(err => res.status(404).json(err));
             }
         })
         .catch(err => res.status(404).json(err));
