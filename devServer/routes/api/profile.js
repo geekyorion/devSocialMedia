@@ -22,7 +22,7 @@ router.get('/test', (req, res) => {
 /**
  * @route               GET api/profile/
  * @description         returns current user's profile
- * @access              public
+ * @access              private
  */
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     const errors = {};
@@ -41,7 +41,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
 /**
  * @route               POST api/profile/
  * @description         saves or update the user's profile
- * @access              public
+ * @access              private
  */
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     const { errors, isValid } = validateProfileInput(req.body);
