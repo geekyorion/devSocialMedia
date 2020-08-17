@@ -138,6 +138,7 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     // req.user -> it contains the user details sent by passport
 
     res.json({
+        id: req.user._id,
         name: req.user.name,
         email: req.user.email
     });
