@@ -236,4 +236,52 @@ router.post('/education', passport.authenticate('jwt', { session: false }), (req
         .catch(err => res.status(404).json(err));
 });
 
+/**
+ * @route               DELETE api/profile/experience/:exp_id
+ * @description         delete the experience from profile
+ * @access              private
+ */
+router.delete('/experience/:exp_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Profile.findOne({ user: req.user.id })
+        .then(profile => {
+            // filter the experience on the basis of exp_id param
+            profile.experience = profile.experience.filter(exp => exp.id !== req.params.exp_id);
+
+            /**
+             * alternative:
+             * const removeIndex = profile.experience.map(exp => exp.id).indexOf(req.params.exp_id);
+             * profile.experience.splice(removeIndex, 1);
+             */
+            profile
+                .save()
+                .then(updated_profile => res.json(updated_profile))
+                .catch(err => res.status(404).json(err));
+        })
+        .catch(err => res.status(404).json(err));
+});
+
+/**
+ * @route               DELETE api/profile/education/:edu_id
+ * @description         delete the education from profile
+ * @access              private
+ */
+router.delete('/education/:edu_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Profile.findOne({ user: req.user.id })
+        .then(profile => {
+            // filter the education on the basis of edu_id param
+            profile.education = profile.education.filter(exp => exp.id !== req.params.edu_id);
+
+            /**
+             * alternative:
+             * const removeIndex = profile.education.map(exp => exp.id).indexOf(req.params.edu_id);
+             * profile.education.splice(removeIndex, 1);
+             */
+            profile
+                .save()
+                .then(updated_profile => res.json(updated_profile))
+                .catch(err => res.status(404).json(err));
+        })
+        .catch(err => res.status(404).json(err));
+});
+
 module.exports = router;
