@@ -20,6 +20,71 @@ router.get('/test', (req, res) => {
 });
 
 /**
+ * @route               GET api/profile/all
+ * @description         get all profiles
+ * @access              public
+ */
+
+router.get('/all', (req, res) => {
+    const errors = {};
+
+    Profile.find()
+        .populate('user', ['name', 'avatar'])
+        .then(profiles => {
+            if (!profiles) {
+                errors.noprofile = 'There are no profiles';
+                return res.status(404).json(errors);
+            }
+            res.json(profiles);
+        })
+        .catch(err => res.status(404).json({ noprofile: 'There are no profiles' }));
+});
+
+/**
+ * @route               GET api/profile/handle/:handle
+ * @description         get user's profile by handle
+ * @access              public
+ */
+
+router.get('/handle/:handle', (req, res) => {
+    const handle = req.params.handle;
+    const errors = {};
+
+    Profile.findOne({ handle })
+        .populate('user', ['name', 'avatar'])
+        .then(profile => {
+            if (!profile) {
+                errors.noprofile = 'Profile is not available for the user';
+                return res.status(404).json(errors);
+            }
+            res.json(profile);
+        })
+        .catch(err => res.status(404).json({ noprofile: 'Profile is not available for the user' }));
+});
+
+/**
+ * @route               GET api/profile/user/:user_id
+ * @description         get user's profile by user ID
+ * @access              public
+ */
+
+router.get('/user/:user_id', (req, res) => {
+    const user = req.params.user_id;
+    const errors = {};
+
+    Profile.findOne({ user })
+        .populate('user', ['name', 'avatar'])
+        .then(profile => {
+            if (!profile) {
+                errors.noprofile = 'Profile is not available for the user';
+                return res.status(404).json(errors);
+            }
+            res.json(profile);
+        })
+        .catch(err => res.status(404).json({ noprofile: 'Profile is not available for the user' }));
+});
+
+/**
  * @route               GET api/profile/
  * @description         returns current user's profile
  * @access              private
