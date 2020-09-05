@@ -161,4 +161,70 @@ router.post('/unlike/:post_id', passport.authenticate('jwt', { session: false })
         })
 });
 
+/**
+ * @route               POST api/post/comment/:post_id
+ * @description         add comment to user's post
+ * @access              private
+ */
+router.post('/comment/:post_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    const { errors, isValid } = validatePostInput(req.body);
+
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    Post.findById(req.params.post_id)
+        .then(post => {
+            const newComment = {
+                text: req.body.text,
+                name: req.body.name,
+                avatar: req.body.avatar,
+                user: req.user.id
+            }
+
+            // add comment to comments array
+            post.comments.unshift(newComment)
+
+            post
+                .save()
+                .then(post => res.json(post))
+                .catch(err => res.status(400).json({ commentError: "Unable to save comment" }));
+        })
+        .catch(err => res.status(404).json({ nopost: "Post is not available" }));
+});
+
+/**
+ * @route               DELETE api/post/comment/:post_id/:comment_id
+ * @description         remove a comment from post
+ * @access              private
+ */
+router.delete('/comment/:post_id/:comment_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Post.findById(req.params.post_id)
+        .then(post => {
+            // check whether comment is available or not
+            if (post.comments.filter(comment => comment._id.toString() === req.params.comment_id).length === 0) {
+                return res.status(404).json({ commentNotExists: "Comment does not exist" });
+            }
+
+            // get the index of comment in comments array
+            const removeIndex = post.comments
+                .map(comment => comment._id.toString())
+                .indexOf(req.params.comment_id);
+
+            // check for the owner of the post
+            if (post.user.toString() === req.user.id || post.comments[removeIndex].user.toString() === req.user.id) {
+                // splice the comments array
+                post.comments.splice(removeIndex, 1);
+
+                post
+                    .save()
+                    .then(post => res.json(post))
+                    .catch(err => res.status(400).json({ commentDeleteError: "Unable to delete the comment" }));
+            } else {
+                return res.status(401).json({ notAuthorised: "You can not delete this comment" });
+            }
+        })
+        .catch(err => res.status(404).json({ nopost: "Post is not available" }));
+});
+
 module.exports = router;
