@@ -3,8 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 
-// load post model
+// load post and profile model
 const Post = require('../../models/Post');
+const Profile = require('../../models/Profile');
 
 // load validators
 const validatePostInput = require('../../validation/post');
@@ -69,6 +70,32 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
             errors.postSave = "Unable to save post";
             res.status(400).json(errors);
         });
+});
+
+/**
+ * @route               DELETE api/post/:post_id
+ * @description         delete a post
+ * @access              private
+ */
+router.delete('/:post_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    // check whether user is available or not
+    Profile.findOne({ user: req.user.id })
+        .then(profile => {
+            Post.findById(req.params.post_id)
+                .then(post => {
+                    // check for the owner of the post
+                    if (post.user.toString() !== req.user.id) {
+                        return res.status(401).json({ notAuthorised: "User not authorized" });
+                    }
+
+                    // delete the post
+                    post
+                        .remove()
+                        .then(() => res.json({ success: true }))
+                        .catch(err => res.status(400).json({ unableToDelete: "Unable to delete the post" }));
+                })
+                .catch(err => res.status(404).json({ nopost: "Post is not available" }));
+        })
 });
 
 module.exports = router;
