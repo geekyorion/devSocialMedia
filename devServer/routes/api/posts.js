@@ -10,7 +10,7 @@ const Post = require('../../models/Post');
 const validatePostInput = require('../../validation/post');
 
 /**
- * @route               GET api/posts/test
+ * @route               GET api/post/test
  * @description         test posts route
  * @access              public
  */
@@ -19,7 +19,7 @@ router.get("/test", (req, res) => {
 });
 
 /**
- * @route               GET api/posts/
+ * @route               GET api/post/
  * @description         fetch posts
  * @access              public
  */
@@ -28,11 +28,23 @@ router.get('/', (req, res) => {
         .find()
         .sort({ date: -1 })
         .then(posts => res.json(posts))
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(404).json({ noposts: "No post is available" }));
 });
 
 /**
- * @route               POST api/posts/
+ * @route               GET api/post/:post_id
+ * @description         fetch a single post
+ * @access              public
+ */
+router.get('/:post_id', (req, res) => {
+    Post
+        .findById(req.params.post_id)
+        .then(post => res.json(post))
+        .catch(err => res.status(404).json({ nopost: `No post is associated with ID ${req.params.post_id}` }));
+});
+
+/**
+ * @route               POST api/post/
  * @description         create new post
  * @access              private
  */
