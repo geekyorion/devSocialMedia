@@ -6,6 +6,7 @@ const passport = require('passport');
 // import various api(s)
 const user = require('./routes/api/user');
 const profile = require('./routes/api/profile');
+const posts = require('./routes/api/posts');
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/user', user);
 app.use('/api/profile', profile);
+app.use('/api/post', posts);
 
 const port = process.env.port || 5000;
 

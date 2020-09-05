@@ -19,9 +19,22 @@ router.get("/test", (req, res) => {
 });
 
 /**
+ * @route               GET api/posts/
+ * @description         fetch posts
+ * @access              public
+ */
+router.get('/', (req, res) => {
+    Post
+        .find()
+        .sort({ date: -1 })
+        .then(posts => res.json(posts))
+        .catch(err => res.status(404).json(err));
+});
+
+/**
  * @route               POST api/posts/
  * @description         create new post
- * @access              public
+ * @access              private
  */
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     const { errors, isValid } = validatePostInput(req.body);
