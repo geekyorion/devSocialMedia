@@ -98,4 +98,67 @@ router.delete('/:post_id', passport.authenticate('jwt', { session: false }), (re
         })
 });
 
+/**
+ * @route               POST api/post/like/:post_id
+ * @description         like a post
+ * @access              private
+ */
+router.post('/like/:post_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    // check whether user is available or not
+    Profile.findOne({ user: req.user.id })
+        .then(_profile => {
+            Post.findById(req.params.post_id)
+                .then(post => {
+                    // check whether post is already there
+                    // indexOf may give errors so should use filter
+                    if (post.likes.filter(like => like.user.toString() === req.user.id).length) {
+                        return res.status(400).json({ alreadyLiked: "YOu already liked this post" });
+                    }
+                    // add like to likes array and then save
+                    post.likes.unshift({ user: req.user.id });
+
+                    post
+                        .save()
+                        .then(post => res.json(post))
+                        .catch(err => res.status(400).json({ likeError: "Unable to like" }));
+                })
+                .catch(err => res.status(404).json({ nopost: "Post is not available" }));
+        })
+});
+
+/**
+ * @route               POST api/post/unlike/:post_id
+ * @description         unlike a post
+ * @access              private
+ */
+router.post('/unlike/:post_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    // check whether user is available or not
+    Profile.findOne({ user: req.user.id })
+        .then(_profile => {
+            Post.findById(req.params.post_id)
+                .then(post => {
+                    // check whether post is already there
+                    // indexOf may give errors so should use filter
+                    if (post.likes.filter(like => like.user.toString() === req.user.id).length === 0) {
+                        return res.status(400).json({ notLiked: "You have not liked this post yet" });
+                    }
+
+                    // remove like from likes array and then save
+                    // get like index from the likes array
+                    const removeIndex = post.likes
+                        .map(like => like.user.toString())
+                        .indexOf(req.user.id);
+
+                    // splice the likes array
+                    post.likes.splice(removeIndex, 1);
+
+                    post
+                        .save()
+                        .then(post => res.json(post))
+                        .catch(err => res.status(400).json({ unlikeError: "Unable to unlike" }));
+                })
+                .catch(err => res.status(404).json({ nopost: "Post is not available" }));
+        })
+});
+
 module.exports = router;
