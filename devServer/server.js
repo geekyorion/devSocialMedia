@@ -46,6 +46,10 @@ app.use('/api/user', user);
 app.use('/api/profile', profile);
 app.use('/api/post', posts);
 
+app.all('*', (req, res) => {
+    res.status(404).json({ routeError: 'Not a valid route' });
+});
+
 const port = process.env.port || 5000;
 
 app.listen(port, () => {

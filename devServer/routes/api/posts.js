@@ -227,4 +227,8 @@ router.delete('/comment/:post_id/:comment_id', passport.authenticate('jwt', { se
         .catch(err => res.status(404).json({ nopost: "Post is not available" }));
 });
 
+app.all('*', (req, res) => {
+    res.status(404).json({ routeError: 'Not a valid route' });
+});
+
 module.exports = router;

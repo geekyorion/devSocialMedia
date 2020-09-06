@@ -144,4 +144,8 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     });
 });
 
+app.all('*', (req, res) => {
+    res.status(404).json({ routeError: 'Not a valid route' });
+});
+
 module.exports = router;

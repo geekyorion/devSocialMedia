@@ -299,4 +299,8 @@ router.delete('/', passport.authenticate('jwt', { session: false }), (req, res) 
         .catch(err => res.status(404).json(err));
 });
 
+app.all('*', (req, res) => {
+    res.status(404).json({ routeError: 'Not a valid route' });
+});
+
 module.exports = router;
