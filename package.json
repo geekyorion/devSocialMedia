@@ -1,9 +1,13 @@
 {
-  "name": "devSocialMedia",
+  "name": "dev-social-media",
   "version": "1.0.0",
-  "description": "A MERN application developed for social media for developers",
+  "description": "A social media web app developed for the developers using MERN stack",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server-install": "npm install --prefix devServer",
+    "server": "npm run server --prefix devServer",
+    "client-install": "npm install --prefix devUI",
+    "client": "npm start --prefix devUI",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -15,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/geekyorion/devSocialMedia/issues"
   },
-  "homepage": "https://github.com/geekyorion/devSocialMedia#readme"
+  "homepage": "https://github.com/geekyorion/devSocialMedia#readme",
+  "devDependencies": {
+    "concurrently": "^5.3.0"
+  }
 }
