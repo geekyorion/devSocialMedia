@@ -1,3 +1,7 @@
+.App {
+    min-height: calc(100vh - 160px);
+}
+
 img {
     width: 100%;
 }
@@ -7,9 +11,9 @@ img {
     background: url('./img/showcase.jpg') no-repeat;
     background-size: cover;
     background-position: center;
-    height: 100vh;
+    height: calc(100vh - 112px);
     margin-top: -24px;
-    margin-bottom: -50px;
+    margin-bottom: -24px;
 }
 
 .landing-inner {
