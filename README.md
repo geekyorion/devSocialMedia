@@ -12,4 +12,6 @@ A social media web app developed for the developers using MERN stack
 
 
 **Note**: *README file is available in the `devServer` and `devUI` folder too for the respected information.*
-_**Project is courtesy of BradTraversy**_
+
+
+_**Project is the courtesy of BradTraversy**_
