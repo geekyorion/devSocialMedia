@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { registerUser } from '../../redux/actions/authActions';
 
-const Register = () => {
+const Register = (props) => {
     const [fullname, setFullname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [cpassword, setCpassword] = useState('');
-    const [errors, setErrors] = useState({});
 
-    const registerUser = (e) => {
+    const dispatch = useDispatch();
+
+    const errors = useSelector(state => state.errors);
+
+    const completeSignup = (e) => {
         e.preventDefault();
 
         const newUser = {
@@ -17,21 +22,8 @@ const Register = () => {
             password,
             cPassword: cpassword
         };
-
-        axios.post('api/user/register', newUser)
-            .then(res => {
-                console.log(res.data)
-
-                // clear the field and navigate to dashboard
-                setFullname('');
-                setEmail('');
-                setPassword('');
-                setCpassword('');
-                setErrors({});
-            })
-            .catch(err => setErrors(err.response.data));
-
-    }
+        dispatch(registerUser(newUser, props.history));
+    };
 
     useEffect(() => {
         document.title = 'Dev Social Media : Register';
@@ -44,7 +36,7 @@ const Register = () => {
                 <p className="lead text-center">
                     Create your Dev Social Media account
                 </p>
-                <form onSubmit={registerUser}>
+                <form onSubmit={completeSignup}>
                     <div className="form-group">
                         <input
                             type="text"
@@ -121,4 +113,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default withRouter(Register);
