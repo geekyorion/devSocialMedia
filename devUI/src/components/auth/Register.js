@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Register = () => {
     const [fullname, setFullname] = useState('');
@@ -17,9 +18,24 @@ const Register = () => {
             cPassword: cpassword
         };
 
-        console.log(newUser);
-        return false;
+        axios.post('api/user/register', newUser)
+            .then(res => {
+                console.log(res.data)
+
+                // clear the field and navigate to dashboard
+                setFullname('');
+                setEmail('');
+                setPassword('');
+                setCpassword('');
+                setErrors({});
+            })
+            .catch(err => setErrors(err.response.data));
+
     }
+
+    useEffect(() => {
+        document.title = 'Dev Social Media : Register'
+    }, []);
 
     return (
         <div className="row">
@@ -28,26 +44,37 @@ const Register = () => {
                 <p className="lead text-center">
                     Create your Dev Social Media account
                 </p>
-                <form action="create-profile.html" onSubmit={registerUser}>
+                <form onSubmit={registerUser}>
                     <div className="form-group">
                         <input
                             type="text"
-                            className="form-control form-control-lg"
+                            className={`form-control form-control-lg${errors.name ? ' is-invalid' : ''}`}
                             placeholder="Name"
                             name="name"
                             value={fullname}
                             onChange={(e) => setFullname(e.target.value)}
                         />
+                        {errors.name && (
+                            <div className="invalid-feedback">
+                                {errors.name}
+                            </div>
+                        )}
                     </div>
                     <div className="form-group">
                         <input
                             type="email"
-                            className="form-control form-control-lg"
+                            className={`form-control form-control-lg${errors.email ? ' is-invalid' : ''}`}
                             placeholder="Email Address"
                             name="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
+
+                        {errors.email && (
+                            <div className="invalid-feedback">
+                                {errors.email}
+                            </div>
+                        )}
 
                         <small className="form-text text-muted">
                             This site uses Gravatar so if you want a profile
@@ -57,22 +84,32 @@ const Register = () => {
                     <div className="form-group">
                         <input
                             type="password"
-                            className="form-control form-control-lg"
+                            className={`form-control form-control-lg${errors.password ? ' is-invalid' : ''}`}
                             placeholder="Password"
                             name="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
+                        {errors.password && (
+                            <div className="invalid-feedback">
+                                {errors.password}
+                            </div>
+                        )}
                     </div>
                     <div className="form-group">
                         <input
                             type="password"
-                            className="form-control form-control-lg"
+                            className={`form-control form-control-lg${errors.cPassword ? ' is-invalid' : ''}`}
                             placeholder="Confirm Password"
                             name="cpassword"
                             value={cpassword}
                             onChange={(e) => setCpassword(e.target.value)}
                         />
+                        {errors.cPassword && (
+                            <div className="invalid-feedback">
+                                {errors.cPassword}
+                            </div>
+                        )}
                     </div>
                     <input
                         type="submit"
@@ -82,6 +119,6 @@ const Register = () => {
             </div>
         </div>
     );
-}
+};
 
 export default Register;
