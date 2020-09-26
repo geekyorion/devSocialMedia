@@ -34,7 +34,7 @@ const Register = () => {
     }
 
     useEffect(() => {
-        document.title = 'Dev Social Media : Register'
+        document.title = 'Dev Social Media : Register';
     }, []);
 
     return (

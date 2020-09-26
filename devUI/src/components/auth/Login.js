@@ -23,7 +23,7 @@ const Login = () => {
     };
 
     useEffect(() => {
-        document.title = 'Dev Social Media : Login'
+        document.title = 'Dev Social Media : Login';
     }, []);
 
     return (
