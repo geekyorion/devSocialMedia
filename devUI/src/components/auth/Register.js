@@ -12,6 +12,11 @@ const Register = (props) => {
     const dispatch = useDispatch();
 
     const errors = useSelector(state => state.errors);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+    if (isAuthenticated) {
+        props.history.push('/dashboard');
+    }
 
     const completeSignup = (e) => {
         e.preventDefault();
