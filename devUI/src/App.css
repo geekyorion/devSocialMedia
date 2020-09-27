@@ -41,3 +41,8 @@ img {
 .form-control::placeholder {
     color: #bbb !important;
 }
+
+.nav-avatar {
+    width: 21px;
+    margin-right: 10px;
+}

@@ -12,7 +12,7 @@ import store from './redux/store';
 import Routing from './Routing';
 
 import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser } from './redux/actions/authActions';
+import { logoutUser, setCurrentUser } from './redux/actions/authActions';
 
 // check for authToken (jwt token)
 if (localStorage.authToken) {
@@ -22,6 +22,15 @@ if (localStorage.authToken) {
     const decodedToken = jwt_decode(localStorage.authToken);
     // save current user info to redux store
     store.dispatch(setCurrentUser(decodedToken));
+
+    // check for expired token
+    const currentTime = Date.now() / 1000;
+    if (decodedToken.exp < currentTime) {
+        // logout the user
+        store.dispatch(logoutUser());
+        // redirect to login
+        window.location.href = '/login';
+    }
 }
 
 function App() {
