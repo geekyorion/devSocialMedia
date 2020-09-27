@@ -3,11 +3,17 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { logoutUser } from '../../redux/actions/authActions';
+import { clearProfile } from '../../redux/actions/profileActions';
 
 const Navbar = () => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const user = useSelector(state => state.auth.user);
+
+    const handleLogout = () => {
+        dispatch(clearProfile());
+        dispatch(logoutUser());
+    }
 
     const guestLinks = (
         <>
@@ -28,9 +34,9 @@ const Navbar = () => {
         <>
             <li className="nav-item">
                 <button
-                    className="btn btn-link nav-link"
+                    className="btn btn-link nav-link nav-link-btn"
                     href="#"
-                    onClick={() => dispatch(logoutUser())}
+                    onClick={handleLogout}
                 >
                     <img
                         className="nav-avatar rounded-circle"

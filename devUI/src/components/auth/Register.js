@@ -39,6 +39,7 @@ const Register = (props) => {
     useEffect(() => {
         document.title = 'Dev Social Media : Register';
         dispatch(clearErrors());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (!isAuthenticated ? (

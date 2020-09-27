@@ -30,6 +30,7 @@ const Login = (props) => {
     useEffect(() => {
         document.title = 'Dev Social Media : Login';
         dispatch(clearErrors());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (!isAuthenticated ? (

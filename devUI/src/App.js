@@ -13,6 +13,7 @@ import Routing from './Routing';
 
 import setAuthToken from './utils/setAuthToken';
 import { logoutUser, setCurrentUser } from './redux/actions/authActions';
+import { clearProfile } from './redux/actions/profileActions';
 
 // check for authToken (jwt token)
 if (localStorage.authToken) {
@@ -28,6 +29,8 @@ if (localStorage.authToken) {
     if (decodedToken.exp < currentTime) {
         // logout the user
         store.dispatch(logoutUser());
+        // clear current profile
+        store.dispatch(clearProfile());
         // redirect to login
         window.location.href = '/login';
     }

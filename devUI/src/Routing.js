@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 // import Landing from './components/layouts/Landing';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import Dashboard from './components/dashboard/Dashboard';
 
 /**
  * Landing page router is defined in App.js and other routes are here
@@ -16,7 +17,7 @@ const Routing = () => (
         {/* <Route exact path="/" component={Landing} /> */}
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
-
+        <Route exact path="/dashboard" component={Dashboard} />
         {/* <Route path="/*" component={ErrorPage} /> */}
     </Switch>
 );
