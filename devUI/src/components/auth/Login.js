@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import TextFieldGroup from '../common/TextFieldGroup';
 import { loginUser } from '../../redux/actions/authActions';
+import { clearErrors } from '../../redux/actions/errorsAction';
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
@@ -27,6 +29,7 @@ const Login = (props) => {
 
     useEffect(() => {
         document.title = 'Dev Social Media : Login';
+        dispatch(clearErrors());
     }, []);
 
     return (!isAuthenticated ? (
@@ -37,39 +40,28 @@ const Login = (props) => {
                     Sign in to your Dev Social Media account
                 </p>
                 <form onSubmit={processLogin}>
-                    <div className="form-group">
-                        <input
-                            type="email"
-                            className={`form-control form-control-lg${errors.email ? ' is-invalid' : ''}`}
-                            placeholder="Email Address"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        {errors.email && (
-                            <div className="invalid-feedback">
-                                {errors.email}
-                            </div>
-                        )}
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="password"
-                            className={`form-control form-control-lg${errors.password ? ' is-invalid' : ''}`}
-                            placeholder="Password"
-                            name="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        {errors.password && (
-                            <div className="invalid-feedback">
-                                {errors.password}
-                            </div>
-                        )}
-                    </div>
+                    <TextFieldGroup
+                        type="email"
+                        placeholder="Email Address"
+                        name="email"
+                        value={email}
+                        onChange={setEmail}
+                        error={errors.email}
+                    />
+
+                    <TextFieldGroup
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        value={password}
+                        onChange={setPassword}
+                        error={errors.password}
+                    />
+
                     <input
                         type="submit"
                         className="btn btn-info btn-block mt-4"
+                        value="Login"
                     />
                 </form>
             </div>

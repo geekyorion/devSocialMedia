@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+
+import TextFieldGroup from '../common/TextFieldGroup';
 import { registerUser } from '../../redux/actions/authActions';
+import { clearErrors } from '../../redux/actions/errorsAction';
 
 const Register = (props) => {
     const [fullname, setFullname] = useState('');
@@ -35,6 +38,7 @@ const Register = (props) => {
 
     useEffect(() => {
         document.title = 'Dev Social Media : Register';
+        dispatch(clearErrors());
     }, []);
 
     return (!isAuthenticated ? (
@@ -45,75 +49,46 @@ const Register = (props) => {
                     Create your Dev Social Media account
                 </p>
                 <form onSubmit={completeSignup}>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            className={`form-control form-control-lg${errors.name ? ' is-invalid' : ''}`}
-                            placeholder="Name"
-                            name="name"
-                            value={fullname}
-                            onChange={(e) => setFullname(e.target.value)}
-                        />
-                        {errors.name && (
-                            <div className="invalid-feedback">
-                                {errors.name}
-                            </div>
-                        )}
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="email"
-                            className={`form-control form-control-lg${errors.email ? ' is-invalid' : ''}`}
-                            placeholder="Email Address"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
+                    <TextFieldGroup
+                        placeholder="Name"
+                        name="name"
+                        value={fullname}
+                        onChange={setFullname}
+                        error={errors.name}
+                    />
 
-                        {errors.email && (
-                            <div className="invalid-feedback">
-                                {errors.email}
-                            </div>
-                        )}
+                    <TextFieldGroup
+                        type="email"
+                        placeholder="Email Address"
+                        name="email"
+                        value={email}
+                        onChange={setEmail}
+                        error={errors.email}
+                        info="This site uses Gravatar so if you want a profile image, use a Gravatar email"
+                    />
 
-                        <small className="form-text text-muted">
-                            This site uses Gravatar so if you want a profile
-                            image, use a Gravatar email
-                        </small>
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="password"
-                            className={`form-control form-control-lg${errors.password ? ' is-invalid' : ''}`}
-                            placeholder="Password"
-                            name="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        {errors.password && (
-                            <div className="invalid-feedback">
-                                {errors.password}
-                            </div>
-                        )}
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="password"
-                            className={`form-control form-control-lg${errors.cPassword ? ' is-invalid' : ''}`}
-                            placeholder="Confirm Password"
-                            name="cpassword"
-                            value={cpassword}
-                            onChange={(e) => setCpassword(e.target.value)}
-                        />
-                        {errors.cPassword && (
-                            <div className="invalid-feedback">
-                                {errors.cPassword}
-                            </div>
-                        )}
-                    </div>
+                    <TextFieldGroup
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        value={password}
+                        onChange={setPassword}
+                        error={errors.password}
+                    />
+
+                    <TextFieldGroup
+                        type="password"
+                        placeholder="Confirm Password"
+                        name="cpassword"
+                        value={cpassword}
+                        onChange={setCpassword}
+                        error={errors.cPassword}
+                    />
+
                     <input
                         type="submit"
                         className="btn btn-info btn-block mt-4"
+                        value="Register"
                     />
                 </form>
             </div>
