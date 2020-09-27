@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 
-const Login = () => {
+import { loginUser } from '../../redux/actions/authActions';
+
+const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState({});
 
-    const loginUser = (e) => {
+    const dispatch = useDispatch();
+    const errors = useSelector(state => state.errors);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+    if (isAuthenticated) {
+        props.history.push('/dashboard');
+    }
+
+    const processLogin = (e) => {
         e.preventDefault();
         const loginData = { email, password };
 
-        axios.post('api/user/login', loginData)
-            .then(res => {
-                console.log(res.data)
-
-                // clear the field and navigate to dashboard
-                setEmail('');
-                setPassword('');
-                setErrors({});
-            })
-            .catch(err => setErrors(err.response.data));
+        dispatch(loginUser(loginData));
     };
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const Login = () => {
                 <p className="lead text-center">
                     Sign in to your Dev Social Media account
                 </p>
-                <form onSubmit={loginUser}>
+                <form onSubmit={processLogin}>
                     <div className="form-group">
                         <input
                             type="email"

@@ -4,7 +4,7 @@ import rootReducer from './reducers';
 
 const initialState = {};
 
-const enhancer = process.env.NODE_ENV === "development"
+const enhancer = (process.env.NODE_ENV === "development" && window.__REDUX_DEVTOOLS_EXTENSION__)
     ? compose(
         applyMiddleware(thunk),
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
