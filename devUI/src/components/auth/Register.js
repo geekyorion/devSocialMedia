@@ -14,10 +14,6 @@ const Register = (props) => {
     const errors = useSelector(state => state.errors);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
-    if (isAuthenticated) {
-        props.history.push('/dashboard');
-    }
-
     const completeSignup = (e) => {
         e.preventDefault();
 
@@ -31,10 +27,17 @@ const Register = (props) => {
     };
 
     useEffect(() => {
+        if (isAuthenticated) {
+            props.history.push('/dashboard');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAuthenticated]);
+
+    useEffect(() => {
         document.title = 'Dev Social Media : Register';
     }, []);
 
-    return (
+    return (!isAuthenticated ? (
         <div className="row">
             <div className="col-md-8 m-auto">
                 <h1 className="display-4 text-center">Sign Up</h1>
@@ -115,6 +118,9 @@ const Register = (props) => {
                 </form>
             </div>
         </div>
+    ) : (
+            ''
+        )
     );
 };
 

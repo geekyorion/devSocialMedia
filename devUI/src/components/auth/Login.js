@@ -29,7 +29,7 @@ const Login = (props) => {
         document.title = 'Dev Social Media : Login';
     }, []);
 
-    return (
+    return (!isAuthenticated ? (
         <div className="row">
             <div className="col-md-8 m-auto">
                 <h1 className="display-4 text-center">Log In</h1>
@@ -74,6 +74,9 @@ const Login = (props) => {
                 </form>
             </div>
         </div>
+    ) : (
+            ''
+        )
     );
 };
 
