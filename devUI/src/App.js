@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import jwt_decode from 'jwt-decode';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css';
 import Navbar from './components/layouts/Navbar';
@@ -49,6 +51,7 @@ function App() {
                         </div>
                     </div>
                     <Footer />
+                    <ToastContainer />
                 </div>
             </BrowserRouter>
         </Provider>
