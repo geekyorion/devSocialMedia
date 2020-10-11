@@ -18,7 +18,7 @@ const emitToaster = ({
         case "warning": type = toast.TYPE.WARNING; break;
         case "error": type = toast.TYPE.ERROR; break;
         case "dark": type = toast.TYPE.DARK; break;
-        default: break;
+        default: type = toast.TYPE.DEFAULT;
     }
 
     toast(toastText, {

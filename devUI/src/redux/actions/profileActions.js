@@ -1,4 +1,5 @@
 import axios from 'axios';
+import emitToaster from '../../utils/alert';
 
 import { setErrors } from './errorsAction';
 import { CLEAR_PROFILE, GET_PROFILE, PROFILE_LOADING } from './types';
@@ -18,6 +19,10 @@ export const getCurrentProfile = () => dispatch => {
                 payload: {}
             });
             dispatch(setErrors(err.response.data));
+            emitToaster({
+                toastText: err.response.data.noprofile || 'Unable to fetch profile',
+                type: 'info'
+            });
         });
     // catch block - when no profile is there or any error occur
 }

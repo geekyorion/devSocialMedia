@@ -1,5 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import emitToaster from '../../utils/alert';
 
 import setAuthToken from '../../utils/setAuthToken';
 import { clearErrors, setErrors } from './errorsAction';
@@ -10,6 +11,10 @@ export const registerUser = (userData, history) => dispatch => {
         .post('api/user/register', userData)
         .then(_res => {
             history.push('/login');
+            emitToaster({
+                toastText: 'You have successfully registered. Please Login to continue',
+                type: 'success'
+            });
             dispatch(clearErrors());
         })
         .catch(err => dispatch(setErrors(err.response.data)));
