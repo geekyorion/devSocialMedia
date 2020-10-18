@@ -34,7 +34,7 @@ const Dashboard = (props) => {
                                 <h1>show profile here</h1>
                             ) : (
                                     <>
-                                        <p>You have not setup profile yet. Please create your profile to get started</p>
+                                        <p>You have not setup profile yet. Please create your profile to get started.</p>
                                         <Link to="create-profile" className="btn btn-info">Create Profile</Link>
                                     </>
                                 )

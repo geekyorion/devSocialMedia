@@ -1,44 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TextFieldGroup = ({
+const InputGroup = ({
     disabled,
     error,
-    handleStateObject,
-    info,
+    icon,
     name,
     onChange,
     placeholder,
     type,
     value
 }) => {
-    const handleInputChange = (e) => {
-        onChange(handleStateObject ? e : e.target.value);
-    }
-
     return (
-        <div className="form-group">
+        <div className="input-group mb-3">
+            <div className="input-group-prepend">
+                <span className="input-group-text">
+                    <i className={`fab fa-${icon}`}></i>
+                </span>
+            </div>
+
             <input
                 type={type}
                 className={`form-control form-control-lg${error ? ' is-invalid' : ''}`}
                 placeholder={placeholder}
                 name={name}
                 value={value}
-                onChange={handleInputChange}
+                onChange={(e) => onChange(e.target.value)}
                 disabled={disabled}
             />
 
-            {error && (<div className="invalid-feedback">{error}</div>)}
-            {info && (<small className="form-text text-muted">{info}</small>)}
-        </div>
+            { error && (<div className="invalid-feedback">{error}</div>)}
+        </div >
     );
 }
 
-TextFieldGroup.propTypes = {
+InputGroup.propTypes = {
     disabled: PropTypes.bool,
     error: PropTypes.string,
-    handleStateObject: PropTypes.bool,
-    info: PropTypes.string,
+    icon: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
@@ -46,10 +45,9 @@ TextFieldGroup.propTypes = {
     value: PropTypes.string.isRequired,
 };
 
-TextFieldGroup.defaultProps = {
+InputGroup.defaultProps = {
     disabled: false,
-    handleStateObject: false,
     type: 'text'
 }
 
-export default TextFieldGroup;
+export default InputGroup;
