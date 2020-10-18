@@ -4,20 +4,25 @@ import PropTypes from 'prop-types';
 const TextAreaFieldGroup = ({
     disabled,
     error,
+    handleStateObject,
     info,
     name,
     onChange,
     placeholder,
     value
 }) => {
+    const handleInputChange = (e) => {
+        onChange(handleStateObject ? e : e.target.value);
+    }
+
     return (
         <div className="form-group">
             <textarea
-                className={`form-control form-control-lg${error ? ' is-invalid' : ''}`}
+                className={`form-control form-control-md${error ? ' is-invalid' : ''}`}
                 placeholder={placeholder}
                 name={name}
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={handleInputChange}
                 disabled={disabled}
             ></textarea>
 
@@ -30,6 +35,7 @@ const TextAreaFieldGroup = ({
 TextAreaFieldGroup.propTypes = {
     disabled: PropTypes.bool,
     error: PropTypes.string,
+    handleStateObject: PropTypes.bool,
     info: PropTypes.string,
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -39,6 +45,7 @@ TextAreaFieldGroup.propTypes = {
 
 TextAreaFieldGroup.defaultProps = {
     disabled: false,
+    handleStateObject: false,
 }
 
 export default TextAreaFieldGroup;

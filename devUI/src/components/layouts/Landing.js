@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -42,6 +42,11 @@ const Landing = () => {
             </Link>
         </>
     );
+
+    useEffect(() => {
+        document.title = 'Dev Social Media : Home';
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className="landing">

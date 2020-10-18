@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const InputGroup = ({
     disabled,
     error,
+    handleStateObject,
     icon,
     name,
     onChange,
@@ -11,6 +12,10 @@ const InputGroup = ({
     type,
     value
 }) => {
+    const handleInputChange = (e) => {
+        onChange(handleStateObject ? e : e.target.value);
+    }
+
     return (
         <div className="input-group mb-3">
             <div className="input-group-prepend">
@@ -21,11 +26,11 @@ const InputGroup = ({
 
             <input
                 type={type}
-                className={`form-control form-control-lg${error ? ' is-invalid' : ''}`}
+                className={`form-control form-control-md${error ? ' is-invalid' : ''}`}
                 placeholder={placeholder}
                 name={name}
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={handleInputChange}
                 disabled={disabled}
             />
 
@@ -37,6 +42,7 @@ const InputGroup = ({
 InputGroup.propTypes = {
     disabled: PropTypes.bool,
     error: PropTypes.string,
+    handleStateObject: PropTypes.bool,
     icon: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -47,6 +53,7 @@ InputGroup.propTypes = {
 
 InputGroup.defaultProps = {
     disabled: false,
+    handleStateObject: false,
     type: 'text'
 }
 

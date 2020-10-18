@@ -2,7 +2,7 @@ import axios from 'axios';
 import emitToaster from '../../utils/alert';
 
 import { setErrors } from './errorsAction';
-import { CLEAR_PROFILE, GET_PROFILE, PROFILE_LOADING } from './types';
+import { CLEAR_PROFILE, GET_PROFILE, PROFILE_LOADING, SET_ERRORS } from './types';
 
 // get current profile
 export const getCurrentProfile = () => dispatch => {
@@ -25,6 +25,22 @@ export const getCurrentProfile = () => dispatch => {
             });
         });
     // catch block - when no profile is there or any error occur
+}
+
+// create user's profile
+export const createUserProfile = (profileData, history) => dispatch => {
+    axios
+        .post('api/profile/', profileData)
+        .then(res => {
+            history.push('/dashboard');
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            });
+        })
+
 }
 
 // set loading as true

@@ -14,6 +14,7 @@ const Dashboard = (props) => {
     const { loading, profile } = profileState;
 
     useEffect(() => {
+        document.title = 'Dev Social Media : Dashboard';
         dispatch(getCurrentProfile());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

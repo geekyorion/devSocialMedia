@@ -135,37 +135,36 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
     if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
     if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
-    if (req.body.instagram) profileFields.social.handle = req.body.handle;
+    if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
 
     // education and experience will be handled sepately
     // as user will be giving different forms for both
 
     Profile.findOne({ user: req.user.id })
-        .then(profile => {
-            if (profile) {
-                // update the profile
-                Profile.findOneAndUpdate(
-                    { user: req.user.id },
-                    { $set: profileFields },
-                    { new: true }
-                ).then(profile => res.json(profile));
-            } else {
-                // create the profile
-                // check for profile handle
-                Profile.findOne({ handle: profileFields.handle })
-                    .then(profile => {
-                        if (profile) {
-                            errors.handle = 'Handle already exists';
-                            return res.status(400).json(errors);
-                        }
+        .then(userProfile => {
+            // check the handle availability
+            Profile.findOne({ handle: profileFields.handle })
+                .then(profile => {
+                    if (profile && profile.user.toString() !== req.user.id) {
+                        errors.handle = 'Handle already exists';
+                        return res.status(400).json(errors);
+                    }
 
-                        // save profile
-                        new Profile(profileFields).save()
+                    // if user's profile is available then update the profile
+                    if (userProfile) {
+                        return Profile.findOneAndUpdate(
+                            { user: req.user.id },
+                            { $set: profileFields },
+                            { new: true }
+                        ).then(profile => res.json(profile));
+                    } else {
+                        // save the profile
+                        return new Profile(profileFields).save()
                             .then(profile => res.json(profile));
-                    })
-                    .catch(err => res.status(404).json(err));
-            }
+                    }
+                })
+                .catch(err => res.status(404).json(err));
         })
         .catch(err => res.status(404).json(err));
 });

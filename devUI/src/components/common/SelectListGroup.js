@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const SelectListGroup = ({
     disabled,
     error,
+    handleStateObject,
     info,
     name,
     onChange,
@@ -16,13 +17,17 @@ const SelectListGroup = ({
         </option>
     ));
 
+    const handleInputChange = (e) => {
+        onChange(handleStateObject ? e : e.target.value);
+    }
+
     return (
         <div className="form-group">
             <select
-                className={`form-control form-control-lg${error ? ' is-invalid' : ''}`}
+                className={`form-control form-control-md${error ? ' is-invalid' : ''}`}
                 name={name}
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={handleInputChange}
                 disabled={disabled}
             >
                 {selectOptions}
@@ -37,6 +42,7 @@ const SelectListGroup = ({
 SelectListGroup.propTypes = {
     disabled: PropTypes.bool,
     error: PropTypes.string,
+    handleStateObject: PropTypes.bool,
     info: PropTypes.string,
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -46,6 +52,7 @@ SelectListGroup.propTypes = {
 
 SelectListGroup.defaultProps = {
     disabled: false,
+    handleStateObject: false,
 }
 
 export default SelectListGroup;
