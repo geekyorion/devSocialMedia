@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const passport = require('passport');
+const helmet = require('helmet');
 
 // import various api(s)
 const user = require('./routes/api/user');
@@ -10,8 +11,19 @@ const posts = require('./routes/api/posts');
 
 const app = express();
 
+app.use(helmet());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
+
+const customHeaders = (req, res, next) => {
+    // disable and set the different balue in the custom header
+    app.disable('x-powered-by');
+    res.setHeader('X-Powered-By', 'GeekyOrion - devSocialMediaServer');
+    next();
+}
+
+// setting up custom powered by header
+app.use(customHeaders);
 
 // database config
 const db = require('./config/keys').mongoURI;
