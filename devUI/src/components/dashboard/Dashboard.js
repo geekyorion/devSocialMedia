@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { getCurrentProfile } from '../../redux/actions/profileActions';
 import Spinner from '../common/Spinner';
+import DeleteProfile from './DeleteProfile';
+import ProfileActions from './ProfileActions';
 
 const Dashboard = (props) => {
     const dispatch = useDispatch();
@@ -26,13 +28,16 @@ const Dashboard = (props) => {
                     <Spinner />
                 ) : (
                         <>
-                            <h1 className="h1 display-4">Dashboard</h1>
-                            <p className="lead">
-                                <i className="fas fa-user" /> Welcome {user && user.name}
-                            </p>
+                            <h1 className="display-4 h1">Dashboard</h1>
 
                             {Object.keys(profile).length > 0 ? (
-                                <h1>show profile here</h1>
+                                <>
+                                    <p className="lead text-muted">
+                                        Welcome
+                                        <Link to={`profile/${profile.handle}`}> {user && user.name}</Link>
+                                    </p>
+                                    <ProfileActions />
+                                </>
                             ) : (
                                     <>
                                         <p>You have not setup profile yet. Please create your profile to get started.</p>
@@ -40,6 +45,8 @@ const Dashboard = (props) => {
                                     </>
                                 )
                             }
+
+                            <DeleteProfile />
                         </>
                     )
                 }

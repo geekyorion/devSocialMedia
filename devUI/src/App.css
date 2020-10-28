@@ -57,3 +57,12 @@ img {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+/* overwrite the bootstrap css classes */
+.lead {
+    font-size: 1.1rem;
+}
+
+.display-4 {
+    font-size: 3rem;
+}
