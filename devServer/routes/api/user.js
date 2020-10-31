@@ -144,6 +144,26 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     });
 });
 
+/**
+ * @route               GET api/user/verify
+ * @description         Verify the Token
+ * @access              private
+ */
+router.get('/verify', passport.authenticate('jwt', { session: false }), (req, res) => {
+    User
+        .findById(req.user.id)
+        .then(user => {
+            if (user && (user.id.toString() === req.user.id.toString())) {
+                return res.json({ verified: true })
+            } else {
+                return res.status(401).json({ verified: 'false' });
+            }
+        })
+        .catch(_err => {
+            return res.status(401).json({ verified: 'false' });
+        });
+});
+
 router.all('*', (req, res) => {
     res.status(404).json({ routeError: 'Not a valid route' });
 });

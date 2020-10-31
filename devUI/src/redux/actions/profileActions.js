@@ -3,7 +3,7 @@ import emitToaster from '../../utils/alert';
 
 import { setErrors } from './errorsAction';
 import { CLEAR_PROFILE, GET_PROFILE, PROFILE_LOADING } from './types';
-import { setCurrentUser } from './authActions';
+import { logoutUser } from './authActions';
 
 // get current profile
 export const getCurrentProfile = () => dispatch => {
@@ -46,7 +46,7 @@ export const deleteUserProfile = () => dispatch => {
     axios
         .delete('api/profile')
         .then(_res => {
-            dispatch(setCurrentUser({}));
+            dispatch(logoutUser());
             emitToaster({
                 toastText: 'Your account is successfully deleted.',
                 type: 'success'
@@ -56,7 +56,7 @@ export const deleteUserProfile = () => dispatch => {
             dispatch(setErrors(err.response.data));
             emitToaster({
                 toastText: 'Unable to delete the account',
-                type: 'success'
+                type: 'warning'
             });
         });
 };
