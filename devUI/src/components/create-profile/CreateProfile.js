@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import CreateProfileForm from './CreateProfileForm';
 import { createUserProfile } from '../../redux/actions/profileActions';
@@ -26,7 +25,7 @@ const CreateProfile = (props) => {
     const dispatch = useDispatch();
     const [formData, setFormData] = useState(initialState);
 
-    const profileState = useSelector(state => state.profile);
+    const processingState = useSelector(state => state.processing.processing);
     const errors = useSelector(state => state.errors);
 
     const handleOnChange = (e) => {
@@ -56,11 +55,8 @@ const CreateProfile = (props) => {
                     formData={formData}
                     handleOnChange={handleOnChange}
                     handleSubmit={handleSubmit}
+                    disableButton={processingState}
                 />
-
-                <Link to="/dashboard" className="btn btn-light btn-sm float-right">
-                    Go Back to Dashboard
-                </Link>
             </div>
         </div>
     )

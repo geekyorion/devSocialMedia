@@ -10,7 +10,9 @@ const CreateProfileForm = ({
     handleSubmit,
     formData,
     handleOnChange,
-    errors
+    errors,
+    formType,
+    disableButton,
 }) => {
     const [displaySocial, setDisplaySocial] = useState(false);
 
@@ -114,9 +116,9 @@ const CreateProfileForm = ({
                     className="btn btn-dark btn-sm"
                     onClick={() => setDisplaySocial(!displaySocial)}
                 >
-                    Add Social Network Links
+                    {formType} Social Network Links
                 </button>
-                <span className="text-muted"> Optional</span>
+                {formType === 'Add' && (<span className="text-muted"> Optional</span>)}
             </div>
 
             {displaySocial ? (
@@ -175,20 +177,29 @@ const CreateProfileForm = ({
                     <></>
                 )
             }
-            <input type="submit" className="btn btn-info btn-block mt-4 mb-4" value="Create Profile" />
+            <input
+                type="submit"
+                className="btn btn-info btn-block mt-4 mb-4"
+                value={`${formType === 'Add' ? 'Create' : 'Update'} Profile`}
+                disabled={disableButton}
+            />
         </form>
     );
 }
 
 CreateProfileForm.propTypes = {
+    disableButton: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
     formData: PropTypes.object.isRequired,
+    formType: PropTypes.string,
     handleOnChange: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
 };
 
 CreateProfileForm.defaultProps = {
     errors: {},
+    formType: 'Add',
+    disableButton: false,
 };
 
 export default CreateProfileForm;

@@ -29,10 +29,14 @@ export const getCurrentProfile = () => dispatch => {
 }
 
 // create user's profile
-export const createUserProfile = (profileData, history) => dispatch => {
+export const createUserProfile = (profileData, history, type = 'created') => dispatch => {
     axios
         .post('api/profile/', profileData)
-        .then(res => {
+        .then(_res => {
+            emitToaster({
+                toastText: `Profile is successfully ${type}`,
+                type: 'success'
+            });
             history.push('/dashboard');
         })
         .catch(err => {

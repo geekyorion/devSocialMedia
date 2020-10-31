@@ -33,6 +33,12 @@ const Navbar = () => {
     const authLinks = (
         <>
             <li className="nav-item">
+                <Link className="nav-link" to="/dashboard">
+                    Dashboard
+                </Link>
+            </li>
+
+            <li className="nav-item">
                 <button
                     className="btn btn-link nav-link nav-link-btn"
                     href="#"

@@ -7,6 +7,7 @@ import Register from './components/auth/Register';
 import PrivateRoute from './components/common/PrivateRoute';
 import Dashboard from './components/dashboard/Dashboard';
 import CreateProfile from './components/create-profile/CreateProfile';
+import EditProfile from './components/edit-profile/EditProfile';
 
 /**
  * Landing page router is defined in App.js and other routes are here
@@ -21,6 +22,7 @@ const Routing = () => (
         <Route exact path="/register" component={Register} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute exact path="/create-profile" component={CreateProfile} />
+        <PrivateRoute exact path="/edit-profile" component={EditProfile} />
         {/* <Route path="/*" component={ErrorPage} /> */}
     </Switch>
 );
