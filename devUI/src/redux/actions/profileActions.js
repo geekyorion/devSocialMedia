@@ -91,6 +91,29 @@ export const addEducation = (eduData, history) => dispatch => {
         })
 };
 
+// delete user experience
+export const deleteUserExperience = (id) => dispatch => {
+    axios
+        .delete(`api/profile/experience/${id}`)
+        .then(res => {
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            });
+            emitToaster({
+                toastText: 'Experience deleted successfully',
+                type: 'success'
+            });
+        })
+        .catch(err => {
+            dispatch(setErrors(err.response.data));
+            emitToaster({
+                toastText: 'Unable to delete the experience',
+                type: 'error'
+            });
+        });
+};
+
 // delete user profile
 export const deleteUserProfile = () => dispatch => {
     axios

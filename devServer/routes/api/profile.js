@@ -200,7 +200,7 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), (re
             }
             // add to experience array (at start)
             profile.experience.unshift(newExp);
-            profile.experience = sortArrByDate(profile.experience);
+            profile.experience = sortArrByDate(profile.experience, 'from');
             profile
                 .save()
                 .then(updated_profile => res.json(updated_profile))
@@ -234,7 +234,7 @@ router.post('/education', passport.authenticate('jwt', { session: false }), (req
             }
             // add to eduction array (at start)
             profile.education.unshift(newEdu);
-            profile.education = sortArrByDate(profile.education);
+            profile.education = sortArrByDate(profile.education, 'from');
             profile
                 .save()
                 .then(updated_profile => res.json(updated_profile))

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { getCurrentProfile } from '../../redux/actions/profileActions';
 import Spinner from '../common/Spinner';
 import DeleteProfile from './DeleteProfile';
+import Experience from './Experience';
 import ProfileActions from './ProfileActions';
 
 const Dashboard = (props) => {
@@ -37,6 +38,9 @@ const Dashboard = (props) => {
                                         <Link to={`profile/${profile.handle}`}> {user && user.name}</Link>
                                     </p>
                                     <ProfileActions />
+                                    {profile.experience && profile.experience.length > 0 && (
+                                        <Experience experience={profile.experience} />
+                                    )}
                                 </>
                             ) : (
                                     <>

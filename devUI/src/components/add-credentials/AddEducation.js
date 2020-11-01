@@ -61,7 +61,7 @@ const AddEducation = (props) => {
                 <div className="row">
                     <div className="col-md-8 m-auto">
                         <h1 className="display-4 text-center">Add Education</h1>
-                        <p class="lead text-center">Add any school, bootcamp, etc that you have attended</p>
+                        <p className="lead text-center">Add any school, bootcamp, etc that you have attended</p>
                         <small className="d-block pb-3 text-info">Please add the most recent education details at last</small>
                         <small className="d-block pb-3">* = required field</small>
                         <form onSubmit={handleAddExperience}>
