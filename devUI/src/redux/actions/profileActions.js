@@ -1,7 +1,7 @@
 import axios from 'axios';
 import emitToaster from '../../utils/alert';
 
-import { setErrors } from './errorsAction';
+import { clearErrors, setErrors } from './errorsAction';
 import { CLEAR_PROFILE, GET_PROFILE, PROFILE_LOADING } from './types';
 import { logoutUser } from './authActions';
 
@@ -22,7 +22,7 @@ export const getCurrentProfile = () => dispatch => {
             dispatch(setErrors(err.response.data));
             emitToaster({
                 toastText: err.response.data.noprofile || 'Unable to fetch profile',
-                type: 'info'
+                type: 'error'
             });
         });
     // catch block - when no profile is there or any error occur
@@ -41,9 +41,35 @@ export const createUserProfile = (profileData, history, type = 'created') => dis
         })
         .catch(err => {
             dispatch(setErrors(err.response.data));
+            emitToaster({
+                toastText: `Unable to ${type.substr(0, type.length - 1)} profile. Please check for any error.`,
+                type: 'error'
+            });
         });
 
 }
+
+// add experience
+export const addExperience = (expData, history) => dispatch => {
+    axios
+        .post('api/profile/experience', expData)
+        .then(res => {
+            history.push('/dashboard');
+            emitToaster({
+                toastText: 'Experience is added successfully',
+                type: 'success',
+            });
+            dispatch(clearErrors());
+        })
+        .catch(err => {
+            dispatch(setErrors(err.response.data));
+            emitToaster({
+                toastText: 'Unable to add experience. Please check for any error',
+                type: 'error',
+            });
+        })
+};
+
 
 // delete user profile
 export const deleteUserProfile = () => dispatch => {

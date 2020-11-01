@@ -12,6 +12,12 @@ const validateProfileInput = require('../../validation/profile');
 const validateExperienceInput = require('../../validation/experience');
 const validateEducationInput = require('../../validation/education');
 
+const sortArrByDate = (arr, dateField) => {
+    arr.sort((a, b) => new Date(a[dateField]) - new Date(b[dateField]));
+    arr.reverse();
+    return arr;
+};
+
 /**
  * @route               GET api/profile/test
  * @description         test profile route
@@ -194,6 +200,7 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), (re
             }
             // add to experience array (at start)
             profile.experience.unshift(newExp);
+            profile.experience = sortArrByDate(profile.experience);
             profile
                 .save()
                 .then(updated_profile => res.json(updated_profile))
