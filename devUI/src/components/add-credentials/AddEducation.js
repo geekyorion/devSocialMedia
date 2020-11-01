@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearErrors } from '../../redux/actions/errorsAction';
-import { addExperience } from '../../redux/actions/profileActions';
+import { addEducation } from '../../redux/actions/profileActions';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 import TextFieldGroup from '../common/TextFieldGroup';
 
 const initialState = {
-    company: '',
     current: false,
-    disabled: false,
+    degree: '',
     description: '',
+    fieldOfStudy: '',
     from: '',
-    location: '',
-    title: '',
+    school: '',
     to: '',
+    disabled: false,
 };
 
-const AddExperience = (props) => {
+const AddEducation = (props) => {
     const [state, setState] = useState(initialState);
     const dispatch = useDispatch();
 
@@ -26,15 +26,15 @@ const AddExperience = (props) => {
     const handleAddExperience = (e) => {
         e.preventDefault();
         const data = {
-            company: state.company,
             current: state.current,
+            degree: state.degree,
             description: state.description,
+            fieldOfStudy: state.fieldOfStudy,
             from: state.from,
-            location: state.location,
-            title: state.title,
+            school: state.school,
             to: state.to,
         };
-        dispatch(addExperience(data, props.history));
+        dispatch(addEducation(data, props.history));
     };
 
     const handleChange = (e) => {
@@ -50,43 +50,43 @@ const AddExperience = (props) => {
     };
 
     useEffect(() => {
-        document.title = 'Dev Social Media : Add Experience';
+        document.title = 'Dev Social Media : Add Education';
         dispatch(clearErrors());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div className="section add-experience">
+        <div className="section add-education">
             <div className="container">
                 <div className="row">
                     <div className="col-md-8 m-auto">
-                        <h1 className="display-4 text-center">Add Experience</h1>
-                        <p className="lead text-center">Add any developer/programming positions that you have had in the past or current</p>
-                        <small className="d-block pb-3 text-info">Please add the most recent experience at last</small>
+                        <h1 className="display-4 text-center">Add Education</h1>
+                        <p class="lead text-center">Add any school, bootcamp, etc that you have attended</p>
+                        <small className="d-block pb-3 text-info">Please add the most recent education details at last</small>
                         <small className="d-block pb-3">* = required field</small>
                         <form onSubmit={handleAddExperience}>
                             <TextFieldGroup
-                                placeholder="* Company"
-                                name="company"
-                                value={state.company}
+                                placeholder="* School Or Bootcamp"
+                                name="school"
+                                value={state.school}
                                 onChange={handleChange}
-                                error={errors.company}
+                                error={errors.school}
                                 handleStateObject
                             />
                             <TextFieldGroup
-                                placeholder="* Job Title"
-                                name="title"
-                                value={state.title}
+                                placeholder="* Degree Or Certificate"
+                                name="degree"
+                                value={state.degree}
                                 onChange={handleChange}
-                                error={errors.title}
+                                error={errors.degree}
                                 handleStateObject
                             />
                             <TextFieldGroup
-                                placeholder="Location"
-                                name="location"
-                                value={state.location}
+                                placeholder="* Field Of Study"
+                                name="fieldOfStudy"
+                                value={state.fieldOfStudy}
                                 onChange={handleChange}
-                                error={errors.location}
+                                error={errors.fieldOfStudy}
                                 handleStateObject
                             />
                             <h6>From Date</h6>
@@ -124,16 +124,16 @@ const AddExperience = (props) => {
                             </div>
                             <TextAreaFieldGroup
                                 name="description"
-                                placeholder="Job Description"
+                                placeholder="Program Description"
                                 value={state.description}
                                 onChange={handleChange}
-                                info="Some of your responsabilities, etc"
+                                info="Tell us about your education experience and what you learned"
                                 handleStateObject
                             />
                             <input
                                 type="submit"
                                 className="btn btn-info btn-block mt-4"
-                                value="Add Experience"
+                                value="Add Education"
                                 disabled={processing}
                             />
                         </form>
@@ -144,4 +144,4 @@ const AddExperience = (props) => {
     )
 };
 
-export default AddExperience;
+export default AddEducation;

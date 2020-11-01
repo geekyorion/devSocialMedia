@@ -234,6 +234,7 @@ router.post('/education', passport.authenticate('jwt', { session: false }), (req
             }
             // add to eduction array (at start)
             profile.education.unshift(newEdu);
+            profile.education = sortArrByDate(profile.education);
             profile
                 .save()
                 .then(updated_profile => res.json(updated_profile))

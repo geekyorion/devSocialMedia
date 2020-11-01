@@ -1,4 +1,5 @@
 // const Validator = require('validator');
+const Validator = require('validator');
 const isEmpty = require('./is-empty');
 
 module.exports = function validateExperienceInput(data) {
@@ -27,6 +28,14 @@ module.exports = function validateExperienceInput(data) {
 
     if (isEmpty(data.from)) {
         errors.from = 'From date field is required';
+    }
+
+    if (!isEmpty(data.to)) {
+        if (!Validator.isDate(data.to)) {
+            errors.to = 'To field is not having a valid date';
+        } else if (!Validator.isAfter(data.to, data.from)) {
+            errors.to = 'To date should be after From date';
+        }
     }
 
     return {

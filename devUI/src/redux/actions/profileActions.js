@@ -70,6 +70,26 @@ export const addExperience = (expData, history) => dispatch => {
         })
 };
 
+// add education
+export const addEducation = (eduData, history) => dispatch => {
+    axios
+        .post('api/profile/education', eduData)
+        .then(res => {
+            history.push('/dashboard');
+            emitToaster({
+                toastText: 'Education detail is added successfully',
+                type: 'success',
+            });
+            dispatch(clearErrors());
+        })
+        .catch(err => {
+            dispatch(setErrors(err.response.data));
+            emitToaster({
+                toastText: 'Unable to add education. Please check for any error',
+                type: 'error',
+            });
+        })
+};
 
 // delete user profile
 export const deleteUserProfile = () => dispatch => {
