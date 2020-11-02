@@ -16,7 +16,7 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
 const customHeaders = (req, res, next) => {
-    // disable and set the different balue in the custom header
+    // disable and set the different value in the custom header
     app.disable('x-powered-by');
     res.setHeader('X-Powered-By', 'GeekyOrion - devSocialMediaServer');
     next();

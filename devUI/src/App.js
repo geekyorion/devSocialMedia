@@ -16,8 +16,10 @@ import Routing from './Routing';
 import setAuthToken from './utils/setAuthToken';
 import { logoutUser, setCurrentUser } from './redux/actions/authActions';
 import { clearProfile } from './redux/actions/profileActions';
+import initInterceptor from './utils/addInterceptor';
+
 // add an interceptor to check for Unauthorized request - user will be logged out
-import './utils/addInterceptor';
+initInterceptor();
 
 // check for authToken (jwt token)
 if (localStorage.authToken) {
