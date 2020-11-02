@@ -70,6 +70,27 @@ export const addExperience = (expData, history) => dispatch => {
         })
 };
 
+// update an experience
+export const updateExperience = (expData, history) => dispatch => {
+    axios
+        .put(`api/profile/experience/${expData.id}`, expData)
+        .then(res => {
+            history.push('/dashboard');
+            emitToaster({
+                toastText: 'Experience is updated successfully',
+                type: 'success',
+            });
+            dispatch(clearErrors());
+        })
+        .catch(err => {
+            dispatch(setErrors(err.response.data));
+            emitToaster({
+                toastText: 'Unable to update experience. Please check for any error',
+                type: 'error',
+            });
+        })
+};
+
 // add education
 export const addEducation = (eduData, history) => dispatch => {
     axios
@@ -101,7 +122,7 @@ export const deleteUserExperience = (id) => dispatch => {
                 payload: res.data
             });
             emitToaster({
-                toastText: 'Experience deleted successfully',
+                toastText: 'Experience is deleted successfully',
                 type: 'success'
             });
         })

@@ -8,8 +8,9 @@ import PrivateRoute from './components/common/PrivateRoute';
 import Dashboard from './components/dashboard/Dashboard';
 import CreateProfile from './components/create-profile/CreateProfile';
 import EditProfile from './components/edit-profile/EditProfile';
-import AddExperience from './components/add-credentials/AddExperience';
+import AddExperience from './components/experience/AddExperience';
 import AddEducation from './components/add-credentials/AddEducation';
+import EditExperience from './components/experience/EditExperience';
 
 /**
  * Landing page router is defined in App.js and other routes are here
@@ -26,6 +27,7 @@ const Routing = () => (
         <PrivateRoute exact path="/create-profile" component={CreateProfile} />
         <PrivateRoute exact path="/edit-profile" component={EditProfile} />
         <PrivateRoute exact path="/add-experience" component={AddExperience} />
+        <PrivateRoute exact path="/edit-experience" component={EditExperience} />
         <PrivateRoute exact path="/add-education" component={AddEducation} />
         {/* <Route path="/*" component={ErrorPage} /> */}
     </Switch>

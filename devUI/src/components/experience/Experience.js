@@ -1,17 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { deleteUserExperience } from '../../redux/actions/profileActions';
 
-const Experience = ({ experience, ...props }) => {
+const Experience = ({ experience }) => {
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const handleDelete = (id) => {
         dispatch(deleteUserExperience(id));
     };
 
-    const handleEdit = (id) => {
-        console.log('implement handle edit - with API');
+    const handleUpdate = (exp) => {
+        history.push({
+            pathname: '/edit-experience',
+            state: { experience: exp }
+        });
     };
 
     return (
@@ -24,28 +29,28 @@ const Experience = ({ experience, ...props }) => {
                             <th>Company</th>
                             <th>Title</th>
                             <th>Years</th>
-                            <th />
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {experience.map(exp => (
                             <tr key={exp._id}>
-                                <td>{exp.company}</td>
-                                <td>{exp.title}</td>
-                                <td>
+                                <td className="align-middle">{exp.company}</td>
+                                <td className="align-middle">{exp.title}</td>
+                                <td className="align-middle">
                                     {new Date(exp.from).toLocaleDateString()}
                                     &nbsp;-&nbsp;
-                                    {exp.to ? new Date(exp.to).toLocaleDateString() : 'Present'}
+                                    {exp.current ? 'Present' : (exp.to ? new Date(exp.to).toLocaleDateString() : 'Present')}
                                 </td>
-                                <td>
+                                <td className="align-middle">
                                     <button
-                                        className="btn btn-info mr-2"
-                                        onClick={() => handleEdit(exp._id)}
+                                        className="btn btn-info m-1"
+                                        onClick={() => handleUpdate(exp)}
                                     >
-                                        Edit
+                                        Update
                                     </button>
                                     <button
-                                        className="btn btn-danger"
+                                        className="btn btn-danger m-1"
                                         onClick={() => handleDelete(exp._id)}
                                     >
                                         Delete

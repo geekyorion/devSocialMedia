@@ -244,6 +244,80 @@ router.post('/education', passport.authenticate('jwt', { session: false }), (req
 });
 
 /**
+ * @route               PUT api/profile/experience/:exp_id
+ * @description         edit an experience in user's profile
+ * @access              private
+ */
+router.put('/experience/:exp_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    const { errors, isValid } = validateExperienceInput(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id })
+        .then(profile => {
+            const newExp = {
+                title: req.body.title,
+                company: req.body.company,
+                location: req.body.location,
+                from: req.body.from,
+                to: req.body.to,
+                current: req.body.current,
+                description: req.body.description,
+            }
+            const updateIndex = profile.experience.map(exp => exp.id).indexOf(req.params.exp_id);
+            if (updateIndex === -1) {
+                errors.udpateError = 'Unable to update the experience';
+                return res.status(400).json(errors);
+            }
+            profile.experience[updateIndex] = newExp;
+            profile.experience = sortArrByDate(profile.experience, 'from');
+            profile
+                .save()
+                .then(updated_profile => res.json(updated_profile))
+                .catch(err => res.status(404).json(err));
+        })
+        .catch(err => res.status(404).json(err));
+});
+
+/**
+ * @route               PUT api/profile/education/:edu_id
+ * @description         edit an education field in user's profile
+ * @access              private
+ */
+router.put('/education/:edu_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    const { errors, isValid } = validateEducationInput(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id })
+        .then(profile => {
+            const newEdu = {
+                school: req.body.school,
+                degree: req.body.degree,
+                fieldOfStudy: req.body.fieldOfStudy,
+                from: req.body.from,
+                to: req.body.to,
+                current: req.body.current,
+                description: req.body.description,
+            }
+            const updateIndex = profile.education.map(edu => edu.id).indexOf(req.params.edu_id);
+            if (updateIndex === -1) {
+                errors.udpateError = 'Unable to update the education';
+                return res.status(400).json(errors);
+            }
+            profile.education[updateIndex] = newEdu;
+            profile.education = sortArrByDate(profile.education, 'from');
+            profile
+                .save()
+                .then(updated_profile => res.json(updated_profile))
+                .catch(err => res.status(404).json(err));
+        })
+        .catch(err => res.status(404).json(err));
+});
+
+/**
  * @route               DELETE api/profile/experience/:exp_id
  * @description         delete the experience from profile
  * @access              private

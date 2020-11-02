@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import CreateProfileForm from '../create-profile/CreateProfileForm';
 import { createUserProfile, getCurrentProfile } from '../../redux/actions/profileActions';
 import { clearErrors } from '../../redux/actions/errorsAction';
-import isEmpty from '../../utils/isEmpty';
+import { isEmpty } from '../../utils/utils';
 
 const initialState = {
     handle: '',

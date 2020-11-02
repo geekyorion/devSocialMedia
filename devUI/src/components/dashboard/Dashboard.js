@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { getCurrentProfile } from '../../redux/actions/profileActions';
 import Spinner from '../common/Spinner';
 import DeleteProfile from './DeleteProfile';
-import Experience from './Experience';
+import Experience from '../experience/Experience';
 import ProfileActions from './ProfileActions';
 
 const Dashboard = (props) => {
