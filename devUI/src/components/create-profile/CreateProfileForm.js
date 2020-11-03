@@ -17,7 +17,7 @@ const CreateProfileForm = ({
     const [displaySocial, setDisplaySocial] = useState(false);
 
     const selectOptions = [
-        { value: '0', label: '* Select Professional Status' },
+        { value: '', label: '* Select Professional Status' },
         { value: 'Developer', label: 'Developer' },
         { value: 'Junior Developer', label: 'Junior Developer' },
         { value: 'Senior Developer', label: 'Senior Developer' },

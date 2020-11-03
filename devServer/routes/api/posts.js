@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+const sanitize = require('mongo-sanitize');
 const passport = require('passport');
 
 // load post and profile model
@@ -39,7 +39,7 @@ router.get('/', (req, res) => {
  */
 router.get('/:post_id', (req, res) => {
     Post
-        .findById(req.params.post_id)
+        .findById(sanitize(req.params.post_id))
         .then(post => res.json(post))
         .catch(err => res.status(404).json({ nopost: `No post is associated with ID ${req.params.post_id}` }));
 });
@@ -50,7 +50,15 @@ router.get('/:post_id', (req, res) => {
  * @access              private
  */
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const { errors, isValid } = validatePostInput(req.body);
+    req.body = sanitize(req.body);
+    let errors = {}, isValid = false;
+    try {
+        const result = validatePostInput(req.body);
+        errors = result.errors;
+        isValid = result.isValid;
+    } catch (err) {
+        res.status(401).json({ invalid: "Invalid data input" });
+    }
 
     if (!isValid) {
         return res.status(400).json(errors);
@@ -81,7 +89,7 @@ router.delete('/:post_id', passport.authenticate('jwt', { session: false }), (re
     // check whether user is available or not
     Profile.findOne({ user: req.user.id })
         .then(profile => {
-            Post.findById(req.params.post_id)
+            Post.findById(sanitize(req.params.post_id))
                 .then(post => {
                     // check for the owner of the post
                     if (post.user.toString() !== req.user.id) {
@@ -96,6 +104,7 @@ router.delete('/:post_id', passport.authenticate('jwt', { session: false }), (re
                 })
                 .catch(err => res.status(404).json({ nopost: "Post is not available" }));
         })
+        .catch(err => res.status(404).json({ nopost: "Post is not available" }));
 });
 
 /**
@@ -107,12 +116,12 @@ router.post('/like/:post_id', passport.authenticate('jwt', { session: false }), 
     // check whether user is available or not
     Profile.findOne({ user: req.user.id })
         .then(_profile => {
-            Post.findById(req.params.post_id)
+            Post.findById(sanitize(req.params.post_id))
                 .then(post => {
                     // check whether post is already there
                     // indexOf may give errors so should use filter
                     if (post.likes.filter(like => like.user.toString() === req.user.id).length) {
-                        return res.status(400).json({ alreadyLiked: "YOu already liked this post" });
+                        return res.status(400).json({ alreadyLiked: "You already liked this post" });
                     }
                     // add like to likes array and then save
                     post.likes.unshift({ user: req.user.id });
@@ -124,6 +133,7 @@ router.post('/like/:post_id', passport.authenticate('jwt', { session: false }), 
                 })
                 .catch(err => res.status(404).json({ nopost: "Post is not available" }));
         })
+        .catch(err => res.status(404).json({ nopost: "Post is not available" }));
 });
 
 /**
@@ -135,7 +145,7 @@ router.post('/unlike/:post_id', passport.authenticate('jwt', { session: false })
     // check whether user is available or not
     Profile.findOne({ user: req.user.id })
         .then(_profile => {
-            Post.findById(req.params.post_id)
+            Post.findById(sanitize(req.params.post_id))
                 .then(post => {
                     // check whether post is already there
                     // indexOf may give errors so should use filter
@@ -159,6 +169,7 @@ router.post('/unlike/:post_id', passport.authenticate('jwt', { session: false })
                 })
                 .catch(err => res.status(404).json({ nopost: "Post is not available" }));
         })
+        .catch(err => res.status(404).json({ nopost: "Post is not available" }));
 });
 
 /**
@@ -167,7 +178,15 @@ router.post('/unlike/:post_id', passport.authenticate('jwt', { session: false })
  * @access              private
  */
 router.post('/comment/:post_id', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const { errors, isValid } = validatePostInput(req.body);
+    req.body = sanitize(req.body);
+    let errors = {}, isValid = false;
+    try {
+        const result = validatePostInput(req.body);
+        errors = result.errors;
+        isValid = result.isValid;
+    } catch (err) {
+        res.status(401).json({ invalid: "Invalid data input" });
+    }
 
     if (!isValid) {
         return res.status(400).json(errors);
@@ -183,7 +202,7 @@ router.post('/comment/:post_id', passport.authenticate('jwt', { session: false }
             }
 
             // add comment to comments array
-            post.comments.unshift(newComment)
+            post.comments.unshift(newComment);
 
             post
                 .save()
@@ -199,7 +218,7 @@ router.post('/comment/:post_id', passport.authenticate('jwt', { session: false }
  * @access              private
  */
 router.delete('/comment/:post_id/:comment_id', passport.authenticate('jwt', { session: false }), (req, res) => {
-    Post.findById(req.params.post_id)
+    Post.findById(sanitize(req.params.post_id))
         .then(post => {
             // check whether comment is available or not
             if (post.comments.filter(comment => comment._id.toString() === req.params.comment_id).length === 0) {

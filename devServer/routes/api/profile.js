@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+const sanitize = require('mongo-sanitize');
 const passport = require('passport');
 
 // load User and Profile model;
@@ -53,7 +53,7 @@ router.get('/all', (req, res) => {
  * @access              public
  */
 router.get('/handle/:handle', (req, res) => {
-    const handle = req.params.handle;
+    const handle = sanitize(req.params.handle);
     const errors = {};
 
     Profile.findOne({ handle })
@@ -74,7 +74,7 @@ router.get('/handle/:handle', (req, res) => {
  * @access              public
  */
 router.get('/user/:user_id', (req, res) => {
-    const user = req.params.user_id;
+    const user = sanitize(req.params.user_id);
     const errors = {};
 
     Profile.findOne({ user })
@@ -96,7 +96,7 @@ router.get('/user/:user_id', (req, res) => {
  */
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     const errors = {};
-    Profile.findOne({ user: req.user.id })
+    Profile.findOne({ user: sanitize(req.user.id) })
         .populate('user', ['name', 'avatar'])
         .then(profile => {
             if (!profile) {
@@ -105,7 +105,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
             }
             res.json(profile);
         })
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(404).json({ serverError: 'Unable to proceed request' }));
 });
 
 /**
@@ -114,7 +114,15 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
  * @access              private
  */
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const { errors, isValid } = validateProfileInput(req.body);
+    req.body = sanitize(req.body);
+    let errors = {}, isValid = false;
+    try {
+        const result = validateProfileInput(req.body);
+        errors = result.errors;
+        isValid = result.isValid;
+    } catch (err) {
+        res.status(401).json({ invalid: "Invalid data input" });
+    }
 
     if (!isValid) {
         return res.status(400).json(errors);
@@ -163,14 +171,16 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
                             { user: req.user.id },
                             { $set: profileFields },
                             { new: true }
-                        ).then(profile => res.json(profile));
+                        ).then(profile => res.json(profile))
+                            .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
                     } else {
                         // save the profile
                         return new Profile(profileFields).save()
-                            .then(profile => res.json(profile));
+                            .then(profile => res.json(profile))
+                            .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
                     }
                 })
-                .catch(err => res.status(404).json(err));
+                .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
         })
         .catch(err => res.status(404).json(err));
 });
@@ -181,7 +191,15 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
  * @access              private
  */
 router.post('/experience', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const { errors, isValid } = validateExperienceInput(req.body);
+    req.body = sanitize(req.body);
+    let errors = {}, isValid = false;
+    try {
+        const result = validateExperienceInput(req.body);
+        errors = result.errors;
+        isValid = result.isValid;
+    } catch (err) {
+        res.status(401).json({ invalid: "Invalid data input" });
+    }
 
     if (!isValid) {
         return res.status(400).json(errors);
@@ -204,9 +222,9 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), (re
             profile
                 .save()
                 .then(updated_profile => res.json(updated_profile))
-                .catch(err => res.status(404).json(err));
+                .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
         })
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
 });
 
 /**
@@ -215,7 +233,15 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), (re
  * @access              private
  */
 router.post('/education', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const { errors, isValid } = validateEducationInput(req.body);
+    req.body = sanitize(req.body);
+    let errors = {}, isValid = false;
+    try {
+        const result = validateEducationInput(req.body);
+        errors = result.errors;
+        isValid = result.isValid;
+    } catch (err) {
+        res.status(401).json({ invalid: "Invalid data input" });
+    }
 
     if (!isValid) {
         return res.status(400).json(errors);
@@ -238,9 +264,9 @@ router.post('/education', passport.authenticate('jwt', { session: false }), (req
             profile
                 .save()
                 .then(updated_profile => res.json(updated_profile))
-                .catch(err => res.status(404).json(err));
+                .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
         })
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
 });
 
 /**
@@ -249,7 +275,16 @@ router.post('/education', passport.authenticate('jwt', { session: false }), (req
  * @access              private
  */
 router.put('/experience/:exp_id', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const { errors, isValid } = validateExperienceInput(req.body);
+    req.body = sanitize(req.body);
+    let errors = {}, isValid = false;
+    try {
+        const result = validateExperienceInput(req.body);
+        errors = result.errors;
+        isValid = result.isValid;
+    } catch (err) {
+        res.status(401).json({ invalid: "Invalid data input" });
+    }
+
     if (!isValid) {
         return res.status(400).json(errors);
     }
@@ -275,9 +310,9 @@ router.put('/experience/:exp_id', passport.authenticate('jwt', { session: false 
             profile
                 .save()
                 .then(updated_profile => res.json(updated_profile))
-                .catch(err => res.status(404).json(err));
+                .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
         })
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
 });
 
 /**
@@ -286,7 +321,16 @@ router.put('/experience/:exp_id', passport.authenticate('jwt', { session: false 
  * @access              private
  */
 router.put('/education/:edu_id', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const { errors, isValid } = validateEducationInput(req.body);
+    req.body = sanitize(req.body);
+    let errors = {}, isValid = false;
+    try {
+        const result = validateEducationInput(req.body);
+        errors = result.errors;
+        isValid = result.isValid;
+    } catch (err) {
+        res.status(401).json({ invalid: "Invalid data input" });
+    }
+
     if (!isValid) {
         return res.status(400).json(errors);
     }
@@ -312,9 +356,9 @@ router.put('/education/:edu_id', passport.authenticate('jwt', { session: false }
             profile
                 .save()
                 .then(updated_profile => res.json(updated_profile))
-                .catch(err => res.status(404).json(err));
+                .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
         })
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
 });
 
 /**
@@ -336,9 +380,9 @@ router.delete('/experience/:exp_id', passport.authenticate('jwt', { session: fal
             profile
                 .save()
                 .then(updated_profile => res.json(updated_profile))
-                .catch(err => res.status(404).json(err));
+                .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
         })
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
 });
 
 /**
@@ -360,9 +404,9 @@ router.delete('/education/:edu_id', passport.authenticate('jwt', { session: fals
             profile
                 .save()
                 .then(updated_profile => res.json(updated_profile))
-                .catch(err => res.status(404).json(err));
+                .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
         })
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
 });
 
 /**
@@ -375,9 +419,9 @@ router.delete('/', passport.authenticate('jwt', { session: false }), (req, res) 
         .then(() => {
             User.findOneAndRemove({ _id: req.user.id })
                 .then(() => res.json({ success: true }))
-                .catch(err => res.status(404).json(err));
+                .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
         })
-        .catch(err => res.status(404).json(err));
+        .catch(err => res.status(500).json({ serverError: 'Unable to proceed request' }));
 });
 
 router.all('*', (req, res) => {

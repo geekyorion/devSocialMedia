@@ -4,6 +4,7 @@ const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const sanitize = require('mongo-sanitize');
 
 // fetch secret key for generating the token
 const keys = require('../../config/keys');
@@ -31,7 +32,15 @@ router.get('/test', (req, res) => {
  */
 router.post('/register', (req, res) => {
     // custom validation of the registration values
-    const { errors, isValid } = validateRegisterInput(req.body);
+    req.body = sanitize(req.body);
+    let errors = {}, isValid = false;
+    try {
+        const result = validateRegisterInput(req.body);
+        errors = result.errors;
+        isValid = result.isValid;
+    } catch (e) {
+        return res.status(401).json({ invalid: 'Invalid data' });
+    }
 
     if (!isValid) {
         return res.status(400).json(errors);
@@ -57,9 +66,16 @@ router.post('/register', (req, res) => {
                     password: req.body.password
                 });
 
-                bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(newUser.password, salt, (err, hash) => {
-                        if (err) throw err;
+                bcrypt.genSalt(10, (errS, salt) => {
+                    if (errS) {
+                        errors.password = 'Unable to register'
+                        return res.status(500).json(errors);
+                    }
+                    bcrypt.hash(newUser.password, salt, (errH, hash) => {
+                        if (errH) {
+                            errors.password = 'Unable to register'
+                            return res.status(500).json(errors);
+                        }
                         newUser.password = hash;
 
                         newUser.save()
@@ -68,6 +84,10 @@ router.post('/register', (req, res) => {
                     });
                 });
             }
+        })
+        .catch(err => {
+            errors.password = 'Unable to sign-in';
+            return res.status(404).json(errors);
         });
 });
 
@@ -78,7 +98,15 @@ router.post('/register', (req, res) => {
  */
 router.post('/login', (req, res) => {
     // custom validation of the login data
-    const { errors, isValid } = validateLoginInput(req.body);
+    req.body = sanitize(req.body);
+    let errors = {}, isValid = false;
+    try {
+        const result = validateLoginInput(req.body);
+        errors = result.errors;
+        isValid = result.isValid;
+    } catch (e) {
+        return res.status(401).json({ invalid: 'Invalid data' });
+    }
 
     if (!isValid) {
         return res.status(400).json(errors);
@@ -125,7 +153,15 @@ router.post('/login', (req, res) => {
                         errors.password = 'Incorrect password'
                         res.status(400).json(errors);
                     }
+                })
+                .catch(err => {
+                    errors.password = 'Unable to sign-in';
+                    return res.status(404).json(errors);
                 });
+        })
+        .catch(err => {
+            errors.password = 'Unable to sign-in';
+            return res.status(404).json(errors);
         });
 });
 
