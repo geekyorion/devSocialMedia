@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+import Link from 'react-router-dom/Link'
 import CreateProfileForm from '../create-profile/CreateProfileForm';
 import { createUserProfile, getCurrentProfile } from '../../redux/actions/profileActions';
 import { clearErrors } from '../../redux/actions/errorsAction';
@@ -92,6 +92,7 @@ const EditProfile = (props) => {
     return (
         <div className="row">
             <div className="col-md-8 m-auto">
+                <Link to="/dashboard" class="btn btn-light btn-xs">Go Back</Link>
                 <h1 className="display-4 text-center">Update Your Profile</h1>
                 <p className="lead text-center">Keep your information updated to make your profile stand out</p>
                 <small className="d-block pb-3">* is required field</small>

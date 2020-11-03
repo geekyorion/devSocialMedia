@@ -15,7 +15,7 @@ const DeleteProfile = () => {
     }
 
     return (
-        <div className="mt-5">
+        <div className="mt-3">
             <button
                 type="button"
                 className="btn btn-danger"

@@ -56,7 +56,7 @@ export const addExperience = (expData, history) => dispatch => {
         .then(res => {
             history.push('/dashboard');
             emitToaster({
-                toastText: 'Experience is added successfully',
+                toastText: 'Experience detail is added successfully',
                 type: 'success',
             });
             dispatch(clearErrors());
@@ -64,7 +64,7 @@ export const addExperience = (expData, history) => dispatch => {
         .catch(err => {
             dispatch(setErrors(err.response.data));
             emitToaster({
-                toastText: 'Unable to add experience. Please check for any error',
+                toastText: 'Unable to add experience detail. Please check for any error',
                 type: 'error',
             });
         })
@@ -77,7 +77,7 @@ export const updateExperience = (expData, history) => dispatch => {
         .then(res => {
             history.push('/dashboard');
             emitToaster({
-                toastText: 'Experience is updated successfully',
+                toastText: 'Experience detail is updated successfully',
                 type: 'success',
             });
             dispatch(clearErrors());
@@ -85,10 +85,33 @@ export const updateExperience = (expData, history) => dispatch => {
         .catch(err => {
             dispatch(setErrors(err.response.data));
             emitToaster({
-                toastText: 'Unable to update experience. Please check for any error',
+                toastText: 'Unable to update experience detail. Please check for any error',
                 type: 'error',
             });
         })
+};
+
+// delete user experience
+export const deleteUserExperience = (id) => dispatch => {
+    axios
+        .delete(`api/profile/experience/${id}`)
+        .then(res => {
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            });
+            emitToaster({
+                toastText: 'Experience detail is deleted successfully',
+                type: 'success'
+            });
+        })
+        .catch(err => {
+            dispatch(setErrors(err.response.data));
+            emitToaster({
+                toastText: 'Unable to delete the experience detail',
+                type: 'error'
+            });
+        });
 };
 
 // add education
@@ -106,30 +129,51 @@ export const addEducation = (eduData, history) => dispatch => {
         .catch(err => {
             dispatch(setErrors(err.response.data));
             emitToaster({
-                toastText: 'Unable to add education. Please check for any error',
+                toastText: 'Unable to add education detail. Please check for any error',
                 type: 'error',
             });
         })
 };
 
-// delete user experience
-export const deleteUserExperience = (id) => dispatch => {
+// update an education
+export const updateEducation = (eduData, history) => dispatch => {
     axios
-        .delete(`api/profile/experience/${id}`)
+        .put(`api/profile/education/${eduData.id}`, eduData)
+        .then(res => {
+            history.push('/dashboard');
+            emitToaster({
+                toastText: 'Education detail is updated successfully',
+                type: 'success',
+            });
+            dispatch(clearErrors());
+        })
+        .catch(err => {
+            dispatch(setErrors(err.response.data));
+            emitToaster({
+                toastText: 'Unable to update education detail. Please check for any error',
+                type: 'error',
+            });
+        })
+};
+
+// delete user education
+export const deleteUserEducation = (id) => dispatch => {
+    axios
+        .delete(`api/profile/education/${id}`)
         .then(res => {
             dispatch({
                 type: GET_PROFILE,
                 payload: res.data
             });
             emitToaster({
-                toastText: 'Experience is deleted successfully',
+                toastText: 'Education detail is deleted successfully',
                 type: 'success'
             });
         })
         .catch(err => {
             dispatch(setErrors(err.response.data));
             emitToaster({
-                toastText: 'Unable to delete the experience',
+                toastText: 'Unable to delete the education detail',
                 type: 'error'
             });
         });

@@ -7,6 +7,7 @@ import Spinner from '../common/Spinner';
 import DeleteProfile from './DeleteProfile';
 import Experience from '../experience/Experience';
 import ProfileActions from './ProfileActions';
+import Education from '../education/Education';
 
 const Dashboard = (props) => {
     const dispatch = useDispatch();
@@ -40,6 +41,9 @@ const Dashboard = (props) => {
                                     <ProfileActions />
                                     {profile.experience && profile.experience.length > 0 && (
                                         <Experience experience={profile.experience} />
+                                    )}
+                                    {profile.education && profile.education.length > 0 && (
+                                        <Education education={profile.education} />
                                     )}
                                 </>
                             ) : (
