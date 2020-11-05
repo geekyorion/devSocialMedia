@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Link from 'react-router-dom/Link'
+import { Link } from 'react-router-dom';
 import { clearErrors } from '../../redux/actions/errorsAction';
 import { updateExperience } from '../../redux/actions/profileActions';
 import ExperienceForm from './ExperienceForm';
@@ -91,7 +91,7 @@ const EditExperience = (props) => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-8 m-auto">
-                        <Link to="/dashboard" class="btn btn-light btn-xs">Go Back</Link>
+                        <Link to="/dashboard" className="btn btn-light btn-xs">Go Back</Link>
                         <h1 className="display-4 text-center">Update an Experience</h1>
                         <p className="lead text-center">Keep your profile updated for a better growth</p>
                         <small className="d-block pb-3">* = required field</small>

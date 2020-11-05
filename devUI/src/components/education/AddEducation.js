@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Link from 'react-router-dom/Link';
+import { Link } from 'react-router-dom';
 import { clearErrors } from '../../redux/actions/errorsAction';
 import { addEducation } from '../../redux/actions/profileActions';
 import EducationForm from './EducationForm';
@@ -60,7 +60,7 @@ const AddEducation = (props) => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-8 m-auto">
-                        <Link to="/dashboard" class="btn btn-light btn-xs">Go Back</Link>
+                        <Link to="/dashboard" className="btn btn-light btn-xs">Go Back</Link>
                         <h1 className="display-4 text-center">Add Education</h1>
                         <p className="lead text-center">Add any school, bootcamp, etc that you have attended</p>
                         <small className="d-block pb-3 text-info">Please add the most recent education details at last</small>

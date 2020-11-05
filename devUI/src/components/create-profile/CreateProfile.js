@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Link from 'react-router-dom/Link';
+import { Link } from 'react-router-dom';
 import CreateProfileForm from './CreateProfileForm';
 import { createUserProfile } from '../../redux/actions/profileActions';
 import { clearErrors } from '../../redux/actions/errorsAction';
@@ -46,7 +46,7 @@ const CreateProfile = (props) => {
     return (
         <div className="row">
             <div className="col-md-8 m-auto">
-                <Link to="/dashboard" class="btn btn-light btn-xs">Go Back</Link>
+                <Link to="/dashboard" className="btn btn-light btn-xs">Go Back</Link>
                 <h1 className="display-4 text-center">Create Your Profile</h1>
                 <p className="lead text-center">Let's get some information to make your profile stand out</p>
                 <small className="d-block pb-3">* is required field</small>

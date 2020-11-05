@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Link from 'react-router-dom/Link'
+import { Link } from 'react-router-dom';
 import CreateProfileForm from '../create-profile/CreateProfileForm';
-import { createUserProfile, getCurrentProfile } from '../../redux/actions/profileActions';
+import { createUserProfile, getCurrentProfile, refreshGravatar } from '../../redux/actions/profileActions';
 import { clearErrors } from '../../redux/actions/errorsAction';
 import { isEmpty } from '../../utils/utils';
 
@@ -29,6 +29,7 @@ const EditProfile = (props) => {
     const profileState = useSelector(state => state.profile);
     const processingState = useSelector(state => state.processing.processing);
     const errors = useSelector(state => state.errors);
+    const avatar = profileState.profile ? profileState.profile.user.avatar : "";
 
     const handleOnChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -92,11 +93,38 @@ const EditProfile = (props) => {
     return (
         <div className="row">
             <div className="col-md-8 m-auto">
-                <Link to="/dashboard" class="btn btn-light btn-xs">Go Back</Link>
+                <Link to="/dashboard" className="btn btn-light btn-xs">Go Back</Link>
                 <h1 className="display-4 text-center">Update Your Profile</h1>
                 <p className="lead text-center">Keep your information updated to make your profile stand out</p>
-                <small className="d-block pb-3">* is required field</small>
 
+                <div className="row mb-3 align-items-center">
+                    <div className="col-sm-4 text-center">
+                        <img
+                            className="responsive rounded profile-avatar"
+                            src={avatar}
+                            alt="Gravatar associated with your email"
+                        />
+                    </div>
+                    <div className="col-sm-8 p-2 text-center">
+                        <small>
+                            This gravatar associated with your e-mail address. If you have changed the gravatar then
+                            please click on refresh gravatar button to refresh your gravatar.
+                        </small>
+                        <div>
+                            <button
+                                className="btn btn-light btn-sm m-2"
+                                onClick={() => dispatch(refreshGravatar())}
+                            >
+                                Refresh Gravatar
+                            </button>
+                        </div>
+                        <small className="text-muted text-sm text-left d-block">
+                            Please refresh the browser in case you are unable to see refreshed gravatar
+                        </small>
+                    </div>
+                </div>
+
+                <small className="d-block mt-3 pb-2">* is required field</small>
                 <CreateProfileForm
                     errors={errors}
                     formData={formData}

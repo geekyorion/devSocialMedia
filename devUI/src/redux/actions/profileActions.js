@@ -2,7 +2,7 @@ import axios from 'axios';
 import emitToaster from '../../utils/alert';
 
 import { clearErrors, setErrors } from './errorsAction';
-import { CLEAR_PROFILE, GET_PROFILE, PROFILE_LOADING } from './types';
+import { CLEAR_PROFILE, GET_ALL_PROFILES, GET_PROFILE, PROFILE_LOADING } from './types';
 import { logoutUser } from './authActions';
 
 // get current profile
@@ -198,6 +198,46 @@ export const deleteUserProfile = () => dispatch => {
             });
         });
 };
+
+export const getAllProfiles = () => dispatch => {
+    axios
+        .get('api/profile/all')
+        .then(res => {
+            dispatch({
+                type: GET_ALL_PROFILES,
+                payload: res.data || []
+            });
+        })
+        .catch(_err => {
+            dispatch({
+                type: GET_ALL_PROFILES,
+                payload: [],
+            });
+            emitToaster({
+                toastText: 'Unable to get all the profiles',
+                type: 'error'
+            });
+        })
+}
+
+export const refreshGravatar = () => dispatch => {
+    axios
+        .get('api/user/gravatar')
+        .then(res => {
+            dispatch(getCurrentProfile());
+            emitToaster({
+                toastText: res.data.gravatar,
+                type: 'success'
+            });
+        })
+        .catch(err => {
+            dispatch(setErrors(err.response.data));
+            emitToaster({
+                toastText: err.response.data.gravatar || 'Unable to refresh gravatar',
+                type: 'error'
+            });
+        });
+}
 
 // set loading as true
 export const setProfileLoading = () => ({

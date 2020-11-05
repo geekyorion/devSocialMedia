@@ -200,6 +200,28 @@ router.get('/verify', passport.authenticate('jwt', { session: false }), (req, re
         });
 });
 
+/**
+ * @route               GET api/user/gravatar
+ * @description         Refresh the associated gravatar
+ * @access              private
+ */
+router.get('/gravatar', passport.authenticate('jwt', { session: false }), (req, res) => {
+    const avatar = gravatar.url(req.user.email, {
+        s: '200',           // Size
+        r: 'pg',            // Rating
+        d: 'mm',            // default
+    });
+    User.findById(req.user.id)
+        .then(profile => {
+            profile.avatar = avatar;
+            profile
+                .save()
+                .then(_sucess => res.json({ gravatar: 'Gravatar refreshed successfully' }))
+                .catch(_err => res.status(400).json({ gravatar: 'Unable to refresh gravatar ' }));
+        })
+        .catch(_err => res.status(400).json({ gravatar: 'Unable to find the user ' }));
+});
+
 router.all('*', (req, res) => {
     res.status(404).json({ routeError: 'Not a valid route' });
 });

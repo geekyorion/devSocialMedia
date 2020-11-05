@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'react-router-dom/Link';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearErrors } from '../../redux/actions/errorsAction';
 import { addExperience } from '../../redux/actions/profileActions';
@@ -60,7 +60,7 @@ const AddExperience = (props) => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-8 m-auto">
-                        <Link to="/dashboard" class="btn btn-light btn-xs">Go Back</Link>
+                        <Link to="/dashboard" className="btn btn-light btn-xs">Go Back</Link>
                         <h1 className="display-4 text-center">Add an Experience</h1>
                         <p className="lead text-center">Add any developer/programming positions that you have had in the past or current</p>
                         <small className="d-block pb-3 text-info">Please add the most recent experience at last</small>
