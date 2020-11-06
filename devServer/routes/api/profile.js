@@ -18,6 +18,13 @@ const sortArrByDate = (arr, dateField) => {
     return arr;
 };
 
+const removeIds = (profiles) => {
+    for (let i = 0; i < profiles.length; i++) {
+        delete profiles[i].user._id;
+    }
+    return profiles;
+}
+
 /**
  * @route               GET api/profile/test
  * @description         test profile route
@@ -42,9 +49,10 @@ router.get('/all', (req, res) => {
                 errors.noprofile = 'There are no profiles';
                 return res.status(404).json(errors);
             }
-            res.json(profiles);
+            profiles = JSON.parse(JSON.stringify(profiles));
+            return res.json(removeIds(profiles));
         })
-        .catch(err => res.status(404).json({ noprofile: 'There are no profiles' }));
+        .catch(_err => res.status(404).json({ noprofile: 'There are no profiles' }));
 });
 
 /**
@@ -63,30 +71,10 @@ router.get('/handle/:handle', (req, res) => {
                 errors.noprofile = 'Profile is not available for the user';
                 return res.status(404).json(errors);
             }
-            res.json(profile);
+            profile = JSON.parse(JSON.stringify(profile));
+            res.json(...removeIds([profile]));
         })
-        .catch(err => res.status(404).json({ noprofile: 'Profile is not available for the user' }));
-});
-
-/**
- * @route               GET api/profile/user/:user_id
- * @description         get user's profile by user ID
- * @access              public
- */
-router.get('/user/:user_id', (req, res) => {
-    const user = sanitize(req.params.user_id);
-    const errors = {};
-
-    Profile.findOne({ user })
-        .populate('user', ['name', 'avatar'])
-        .then(profile => {
-            if (!profile) {
-                errors.noprofile = 'Profile is not available for the user';
-                return res.status(404).json(errors);
-            }
-            res.json(profile);
-        })
-        .catch(err => res.status(404).json({ noprofile: 'Profile is not available for the user' }));
+        .catch(_err => res.status(404).json({ noprofile: 'Profile is not available for the user' }));
 });
 
 /**

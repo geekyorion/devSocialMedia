@@ -12,6 +12,7 @@ import AddExperience from './components/experience/AddExperience';
 import AddEducation from './components/education/AddEducation';
 import EditExperience from './components/experience/EditExperience';
 import EditEducation from './components/education/EditEducation';
+import Profiles from './components/all-profiles/Profiles';
 
 /**
  * Landing page router is defined in App.js and other routes are here
@@ -31,6 +32,7 @@ const Routing = () => (
         <PrivateRoute exact path="/edit-experience" component={EditExperience} />
         <PrivateRoute exact path="/add-education" component={AddEducation} />
         <PrivateRoute exact path="/edit-education" component={EditEducation} />
+        <Route exact path="/profiles" component={Profiles} />
         {/* <Route path="/*" component={ErrorPage} /> */}
     </Switch>
 );

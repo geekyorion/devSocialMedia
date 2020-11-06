@@ -119,7 +119,8 @@ const EditProfile = (props) => {
                             </button>
                         </div>
                         <small className="text-muted text-sm text-left d-block">
-                            Please refresh the browser in case you are unable to see refreshed gravatar
+                            You may need to refresh the browser if you are unable to see the refreshed gravatar
+                            due to browser cache
                         </small>
                     </div>
                 </div>
@@ -135,7 +136,7 @@ const EditProfile = (props) => {
                 />
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default EditProfile;

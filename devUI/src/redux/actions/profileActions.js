@@ -200,6 +200,7 @@ export const deleteUserProfile = () => dispatch => {
 };
 
 export const getAllProfiles = () => dispatch => {
+    dispatch(setProfileLoading());
     axios
         .get('api/profile/all')
         .then(res => {

@@ -82,3 +82,27 @@ img {
 .text-sm {
     font-size: 0.65rem;
 }
+
+.display-5 {
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+@media only screen and (max-width: 575px) {
+    .card-main {
+        text-align: center;
+    }
+
+    .card-detail {
+        margin-top: 20px;
+    }
+
+    .profile-avatar {
+        max-width: 180px;
+    }
+}
+
+.list-group-custom {
+    padding: 0.5rem 1rem;
+}
