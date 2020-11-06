@@ -9,7 +9,7 @@ import { logoutUser } from './authActions';
 export const getCurrentProfile = () => dispatch => {
     dispatch(setProfileLoading());
     axios
-        .get('api/profile/')
+        .get('/api/profile/')
         .then(res => dispatch({
             type: GET_PROFILE,
             payload: res.data
@@ -31,7 +31,7 @@ export const getCurrentProfile = () => dispatch => {
 // create user's profile
 export const createUserProfile = (profileData, history, type = 'created') => dispatch => {
     axios
-        .post('api/profile/', profileData)
+        .post('/api/profile/', profileData)
         .then(_res => {
             emitToaster({
                 toastText: `Profile is successfully ${type}`,
@@ -52,7 +52,7 @@ export const createUserProfile = (profileData, history, type = 'created') => dis
 // add experience
 export const addExperience = (expData, history) => dispatch => {
     axios
-        .post('api/profile/experience', expData)
+        .post('/api/profile/experience', expData)
         .then(res => {
             history.push('/dashboard');
             emitToaster({
@@ -73,7 +73,7 @@ export const addExperience = (expData, history) => dispatch => {
 // update an experience
 export const updateExperience = (expData, history) => dispatch => {
     axios
-        .put(`api/profile/experience/${expData.id}`, expData)
+        .put(`/api/profile/experience/${expData.id}`, expData)
         .then(res => {
             history.push('/dashboard');
             emitToaster({
@@ -94,7 +94,7 @@ export const updateExperience = (expData, history) => dispatch => {
 // delete user experience
 export const deleteUserExperience = (id) => dispatch => {
     axios
-        .delete(`api/profile/experience/${id}`)
+        .delete(`/api/profile/experience/${id}`)
         .then(res => {
             dispatch({
                 type: GET_PROFILE,
@@ -117,7 +117,7 @@ export const deleteUserExperience = (id) => dispatch => {
 // add education
 export const addEducation = (eduData, history) => dispatch => {
     axios
-        .post('api/profile/education', eduData)
+        .post('/api/profile/education', eduData)
         .then(res => {
             history.push('/dashboard');
             emitToaster({
@@ -138,7 +138,7 @@ export const addEducation = (eduData, history) => dispatch => {
 // update an education
 export const updateEducation = (eduData, history) => dispatch => {
     axios
-        .put(`api/profile/education/${eduData.id}`, eduData)
+        .put(`/api/profile/education/${eduData.id}`, eduData)
         .then(res => {
             history.push('/dashboard');
             emitToaster({
@@ -159,7 +159,7 @@ export const updateEducation = (eduData, history) => dispatch => {
 // delete user education
 export const deleteUserEducation = (id) => dispatch => {
     axios
-        .delete(`api/profile/education/${id}`)
+        .delete(`/api/profile/education/${id}`)
         .then(res => {
             dispatch({
                 type: GET_PROFILE,
@@ -182,7 +182,7 @@ export const deleteUserEducation = (id) => dispatch => {
 // delete user profile
 export const deleteUserProfile = () => dispatch => {
     axios
-        .delete('api/profile')
+        .delete('/api/profile')
         .then(_res => {
             dispatch(logoutUser());
             emitToaster({
@@ -199,10 +199,11 @@ export const deleteUserProfile = () => dispatch => {
         });
 };
 
+// get all users profile
 export const getAllProfiles = () => dispatch => {
     dispatch(setProfileLoading());
     axios
-        .get('api/profile/all')
+        .get('/api/profile/all')
         .then(res => {
             dispatch({
                 type: GET_ALL_PROFILES,
@@ -221,9 +222,32 @@ export const getAllProfiles = () => dispatch => {
         })
 }
 
+// get user profile by handle
+export const getProfileByHandle = (handle) => dispatch => {
+    dispatch(setProfileLoading());
+    axios
+        .get(`/api/profile/handle/${handle}`)
+        .then(res => {
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data || {}
+            });
+        })
+        .catch(_err => {
+            dispatch({
+                type: GET_PROFILE,
+                payload: [],
+            });
+            emitToaster({
+                toastText: 'Unable to get profile',
+                type: 'error'
+            });
+        });
+}
+
 export const refreshGravatar = () => dispatch => {
     axios
-        .get('api/user/gravatar')
+        .get('/api/user/gravatar')
         .then(res => {
             dispatch(getCurrentProfile());
             emitToaster({

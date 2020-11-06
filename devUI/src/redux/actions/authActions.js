@@ -8,7 +8,7 @@ import { SET_CURRENT_USER } from './types';
 
 export const registerUser = (userData, history) => dispatch => {
     axios
-        .post('api/user/register', userData)
+        .post('/api/user/register', userData)
         .then(_res => {
             history.push('/login');
             emitToaster({
@@ -22,7 +22,7 @@ export const registerUser = (userData, history) => dispatch => {
 
 export const loginUser = (userData) => dispatch => {
     axios
-        .post('api/user/login', userData)
+        .post('/api/user/login', userData)
         .then(res => {
             // extract the token from response
             const { token } = res.data;
