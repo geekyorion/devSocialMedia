@@ -46,7 +46,7 @@ const ProfileCreds = ({ experience, education }) => {
             <div className="col-md-6 pt-2">
                 <h3 className="text-center text-info">Education</h3>
                 {isEmpty(education) ? (
-                    <p className="lead text-center">No experience listed</p>
+                    <p className="lead text-center">No education listed</p>
                 ) : (
                         <ul className="list-group">{educationMarkup}</ul>
                     )
