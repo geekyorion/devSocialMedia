@@ -35,8 +35,11 @@ const Dashboard = (props) => {
                             {Object.keys(profile).length > 0 ? (
                                 <>
                                     <p className="lead text-muted">
-                                        Welcome
-                                        <Link to={`profile/${profile.handle}`}> {user && user.name}</Link>
+                                        Welcome&nbsp;
+                                        <Link to={{
+                                            pathname: `profile/${profile.handle}`,
+                                            state: 'dashboard'
+                                        }}>{user && user.name}</Link>
                                     </p>
                                     <ProfileActions />
                                     {profile.experience && profile.experience.length > 0 && (

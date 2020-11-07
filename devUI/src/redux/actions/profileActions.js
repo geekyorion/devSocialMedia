@@ -223,7 +223,7 @@ export const getAllProfiles = () => dispatch => {
 }
 
 // get user profile by handle
-export const getProfileByHandle = (handle) => dispatch => {
+export const getProfileByHandle = (handle, history) => dispatch => {
     dispatch(setProfileLoading());
     axios
         .get(`/api/profile/handle/${handle}`)
@@ -238,6 +238,7 @@ export const getProfileByHandle = (handle) => dispatch => {
                 type: GET_PROFILE,
                 payload: [],
             });
+            history.push('/');
             emitToaster({
                 toastText: 'Unable to get profile',
                 type: 'error'

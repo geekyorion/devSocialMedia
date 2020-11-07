@@ -22,11 +22,12 @@ const ProfileCard = ({
                     <p className="mb-1">
                         {profile.status} {isEmpty(profile.company) ? '' : <span>at {profile.company}</span>}
                     </p>
-                    <p>
-                        {isEmpty(profile.location) ? <></> : <span>{profile.location}</span>}
-                    </p>
+                    {isEmpty(profile.location) ? <></> : <p>{profile.location}</p>}
                     <Link
-                        to={`/profile/${profile.handle}`}
+                        to={{
+                            pathname: `/profile/${profile.handle}`,
+                            state: 'profiles'
+                        }}
                         className="btn btn-info btn-sm"
                     >
                         View Profile
