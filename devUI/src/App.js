@@ -49,10 +49,7 @@ function App() {
                 <div className="wrapper">
                     <Navbar />
                     <div className="App">
-                        <Route exact path="/" component={Landing} />
-                        <div className="container">
-                            <Routing />
-                        </div>
+                        <Routing />
                     </div>
                     <Footer />
                     <ToastContainer />

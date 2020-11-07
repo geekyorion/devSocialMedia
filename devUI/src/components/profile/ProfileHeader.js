@@ -9,9 +9,9 @@ const ProfileHeader = ({ profile }) => {
         <div className="col-md-12">
             <div className="card card-body bg-info text-white mb-3">
                 <div className="row">
-                    <div className="col-4 col-md-3 m-auto">
+                    <div className="col m-auto text-center">
                         <img
-                            className="rounded-circle mb-2"
+                            className="rounded-circle mb-2 profile-avatar"
                             src={user.avatar}
                             alt="Gravatar associated with your email"
                         />

@@ -106,3 +106,8 @@ img {
 .list-group-custom {
     padding: 0.5rem 1rem;
 }
+
+.logo-404 {
+    color: #0005;
+    text-shadow: 0 0 10px black;
+}

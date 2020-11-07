@@ -68,7 +68,7 @@ const ExperienceForm = ({
                     id="current-job"
                 />
                 <label className="form-check-label" htmlFor="current-job">
-                    Current Job
+                    Current Education
                 </label>
             </div>
             <TextAreaFieldGroup
