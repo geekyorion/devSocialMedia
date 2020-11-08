@@ -47,11 +47,13 @@ export const setCurrentUser = decodedToken => ({
 });
 
 // logout user
-export const logoutUser = () => dispatch => {
+export const logoutUser = (history) => dispatch => {
     // remove authToken from localStorage
     localStorage.removeItem('authToken');
     // delete Authorization from request header
     setAuthToken(false);
     // remove current user
     dispatch(setCurrentUser({}));
+    // navigate to the login page
+    history.push('/login');
 };

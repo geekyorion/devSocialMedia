@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import jwt_decode from 'jwt-decode';
 import { ToastContainer } from 'react-toastify';
@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Navbar from './components/layouts/Navbar';
 import Footer from './components/layouts/Footer';
-import Landing from './components/layouts/Landing';
 
 import store from './redux/store';
 import Routing from './Routing';
@@ -45,7 +44,7 @@ if (localStorage.authToken) {
 function App() {
     return (
         <Provider store={store}>
-            <BrowserRouter>
+            <BrowserRouter basename={process.env.PUBLIC_URL}>
                 <div className="wrapper">
                     <Navbar />
                     <div className="App">

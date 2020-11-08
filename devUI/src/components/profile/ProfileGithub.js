@@ -60,6 +60,16 @@ const ProfileGithub = ({ username }) => {
                                     <span className="badge badge-light m-1">
                                         Size: {repo.size > 1023 ? `${(repo.size / 1024).toFixed(2)} MB` : `${repo.size} KB`}
                                     </span>
+                                    {repo.homepage && (<span className="badge badge-success m-1">
+                                        <a
+                                            href={repo.homepage}
+                                            className="text-light"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Homepage
+                                        </a>
+                                    </span>)}
                                 </div>
                             </div>
                         </div>

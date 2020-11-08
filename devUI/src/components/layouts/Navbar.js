@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { logoutUser } from '../../redux/actions/authActions';
@@ -7,12 +7,13 @@ import { clearProfile } from '../../redux/actions/profileActions';
 
 const Navbar = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const user = useSelector(state => state.auth.user);
 
     const handleLogout = () => {
         dispatch(clearProfile());
-        dispatch(logoutUser());
+        dispatch(logoutUser(history));
     }
 
     const guestLinks = (
@@ -33,8 +34,19 @@ const Navbar = () => {
     const authLinks = (
         <>
             <li className="nav-item">
+                <Link className="nav-link" to="/posts">
+                    Post Feed
+                </Link>
+            </li>
+
+            <li className="nav-item">
                 <Link className="nav-link" to="/dashboard">
-                    Dashboard
+                    <img
+                        className="nav-avatar rounded-circle"
+                        src={user.avatar}
+                        alt={user.name}
+                        title="Gravatar associated with your email"
+                    /> Dashboard
                 </Link>
             </li>
 
@@ -44,12 +56,6 @@ const Navbar = () => {
                     href="#"
                     onClick={handleLogout}
                 >
-                    <img
-                        className="nav-avatar rounded-circle"
-                        src={user.avatar}
-                        alt={user.name}
-                        title="Gravatar associated with your email"
-                    />
                     Logout
                 </button>
             </li>
