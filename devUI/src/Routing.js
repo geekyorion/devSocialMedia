@@ -15,6 +15,7 @@ import EditEducation from './components/education/EditEducation';
 import Profiles from './components/all-profiles/Profiles';
 import Profile from './components/profile/Profile';
 import NotFound from './components/not-found/NotFound';
+import Posts from './components/post/Posts';
 
 const Routing = () => (
     <Switch>
@@ -31,6 +32,7 @@ const Routing = () => (
                     <PrivateRoute exact path="/edit-experience" component={EditExperience} />
                     <PrivateRoute exact path="/add-education" component={AddEducation} />
                     <PrivateRoute exact path="/edit-education" component={EditEducation} />
+                    <PrivateRoute exact path="/feed" component={Posts} />
                     <Route exact path="/profiles" component={Profiles} />
                     <Route exact path="/profile/:handle" component={Profile} />
                     <Route exact path="/*" component={NotFound} />

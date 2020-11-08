@@ -12,6 +12,7 @@ const Login = (props) => {
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors) || {};
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const processing = useSelector(state => state.processing.processing);
 
     const processLogin = (e) => {
         e.preventDefault();
@@ -63,6 +64,7 @@ const Login = (props) => {
                         type="submit"
                         className="btn btn-info btn-block mt-4"
                         value="Login"
+                        disabled={processing}
                     />
                 </form>
             </div>

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 const Spinner = ({
     spinnerType,
-    spinnerColor
+    spinnerColor,
+    position
 }) => {
     // provide default value in case of wrong propType value
     if (spinnerType === 'border' && spinnerType === 'grow') {
@@ -16,7 +17,7 @@ const Spinner = ({
     }
 
     return (
-        <div className="spinner-comp">
+        <div className={`spinner-comp${position === 'absolute' ? ' spinner-absolute' : ''}`}>
             <div className={`spinner-${spinnerType} text-${spinnerColor}`} role="status">
                 <span className="sr-only">Loading...</span>
             </div>
@@ -27,11 +28,13 @@ const Spinner = ({
 Spinner.propTypes = ({
     spinnerType: PropTypes.string,
     spinnerColor: PropTypes.string,
+    position: PropTypes.string,
 });
 
 Spinner.defaultProps = ({
     spinnerType: 'border',
     spinnerColor: 'dark',
+    position: 'fixed',
 });
 
 export default Spinner;

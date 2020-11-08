@@ -58,6 +58,14 @@ img {
     transform: translate(-50%, -50%);
 }
 
+.spinner-absolute {
+    position: absolute;
+}
+
+.div-relative {
+    position: relative;
+}
+
 /* overwrite the bootstrap css classes - start */
 .lead {
     font-size: 1.1rem;

@@ -16,6 +16,7 @@ const Register = (props) => {
 
     const errors = useSelector(state => state.errors);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const processing = useSelector(state => state.processing.processing);
 
     const completeSignup = (e) => {
         e.preventDefault();
@@ -90,6 +91,7 @@ const Register = (props) => {
                         type="submit"
                         className="btn btn-info btn-block mt-4"
                         value="Register"
+                        disabled={processing}
                     />
                 </form>
             </div>

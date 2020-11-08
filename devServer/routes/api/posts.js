@@ -22,11 +22,25 @@ router.get("/test", (req, res) => {
 /**
  * @route               GET api/post/
  * @description         fetch posts
- * @access              public
+ * @access              private
  */
-router.get('/', (req, res) => {
+router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     Post
         .find()
+        .populate(model = 'profile', match = ['handle'])
+        .sort({ date: -1 })
+        .then(posts => res.json(posts))
+        .catch(err => res.status(404).json({ noposts: "No post is available" }));
+});
+
+/**
+ * @route               GET api/post/user
+ * @description         fetch posts
+ * @access              private
+ */
+router.get('/user', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Post
+        .find({ user: req.user.id })
         .sort({ date: -1 })
         .then(posts => res.json(posts))
         .catch(err => res.status(404).json({ noposts: "No post is available" }));
@@ -35,9 +49,9 @@ router.get('/', (req, res) => {
 /**
  * @route               GET api/post/:post_id
  * @description         fetch a single post
- * @access              public
+ * @access              private
  */
-router.get('/:post_id', (req, res) => {
+router.get('/:post_id', passport.authenticate('jwt', { session: false }), (req, res) => {
     Post
         .findById(sanitize(req.params.post_id))
         .then(post => res.json(post))
@@ -66,8 +80,8 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 
     const newPost = new Post({
         text: req.body.text,
-        name: req.body.name,
-        avatar: req.body.avatar,
+        name: req.user.name,
+        avatar: req.user.avatar,
         user: req.user.id
     });
 

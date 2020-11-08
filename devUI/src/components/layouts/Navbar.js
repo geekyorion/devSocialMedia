@@ -34,7 +34,7 @@ const Navbar = () => {
     const authLinks = (
         <>
             <li className="nav-item">
-                <Link className="nav-link" to="/posts">
+                <Link className="nav-link" to="/feed">
                     Post Feed
                 </Link>
             </li>
