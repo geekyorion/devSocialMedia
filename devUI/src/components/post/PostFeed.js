@@ -11,7 +11,7 @@ const PostFeed = ({ posts }) => {
             {posts.length > 0 ? (
                 posts.map(post => <PostItem key={post._id} post={post} userID={user.id} />)
             ) : (
-                    <div class="card card-body mb-3">
+                    <div className="card card-body mb-3">
                         Post(s) are not available
                     </div>
                 )

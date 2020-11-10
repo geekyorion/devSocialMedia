@@ -4,6 +4,7 @@ import errorReducer from './errorReducer';
 import profileReducer from './profileReducer';
 import processingReducer from './processingReducer';
 import postReducer from './postReducer';
+import deleteReducer from './deleteReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
     profile: profileReducer,
     processing: processingReducer,
     post: postReducer,
+    delete: deleteReducer
 });

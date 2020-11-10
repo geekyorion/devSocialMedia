@@ -8,7 +8,7 @@ const ProfileHeader = ({ profile }) => {
     return (
         <div className="col-md-12">
             <div className="card card-body bg-info text-white mb-3">
-                <div className="row">
+                <div className="row mt-3">
                     <div className="col m-auto text-center">
                         <img
                             className="rounded-circle mb-2 profile-avatar"

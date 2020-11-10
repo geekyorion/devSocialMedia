@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { deleteUserEducation } from '../../redux/actions/profileActions';
+import { initDelete } from '../../redux/actions/deleteActions';
 
 const Education = ({ education }) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
     const handleDelete = (id) => {
-        dispatch(deleteUserEducation(id));
+        dispatch(initDelete({
+            modalType: 'education',
+            modalFunc: deleteUserEducation,
+            modalParam: id
+        }));
     };
 
     const handleUpdate = (edu) => {
@@ -52,6 +57,8 @@ const Education = ({ education }) => {
                                     <button
                                         className="btn btn-danger btn-sm m-1"
                                         onClick={() => handleDelete(edu._id)}
+                                        data-toggle="modal"
+                                        data-target="#deleteRecord"
                                     >
                                         Delete
                                     </button>

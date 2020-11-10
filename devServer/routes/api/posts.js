@@ -27,7 +27,6 @@ router.get("/test", (req, res) => {
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     Post
         .find()
-        .populate(model = 'profile', match = ['handle'])
         .sort({ date: -1 })
         .then(posts => res.json(posts))
         .catch(err => res.status(404).json({ noposts: "No post is available" }));
@@ -135,7 +134,7 @@ router.post('/like/:post_id', passport.authenticate('jwt', { session: false }), 
                     // check whether post is already there
                     // indexOf may give errors so should use filter
                     if (post.likes.filter(like => like.user.toString() === req.user.id).length) {
-                        return res.status(400).json({ alreadyLiked: "You already liked this post" });
+                        return res.status(400).json({ alreadyLiked: "You've already liked this post" });
                     }
                     // add like to likes array and then save
                     post.likes.unshift({ user: req.user.id });

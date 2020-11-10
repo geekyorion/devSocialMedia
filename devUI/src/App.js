@@ -16,6 +16,7 @@ import setAuthToken from './utils/setAuthToken';
 import { logoutUser, setCurrentUser } from './redux/actions/authActions';
 import { clearProfile } from './redux/actions/profileActions';
 import initInterceptor from './utils/addInterceptor';
+import DeleteRecord from './components/common/DeleteRecord';
 
 // add an interceptor to check for Unauthorized request - user will be logged out
 initInterceptor();
@@ -52,6 +53,7 @@ function App() {
                     </div>
                     <Footer />
                     <ToastContainer />
+                    <DeleteRecord />
                 </div>
             </BrowserRouter>
         </Provider>

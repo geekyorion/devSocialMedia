@@ -22,3 +22,7 @@ export const GET_POSTS = 'GET_POSTS';
 export const ADD_POST = 'ADD_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const RESET_TEXT = 'RESET_TEXT';
+
+// for delete actions
+export const INIT_DELETE = 'INIT_DELETE';
+export const CLEAR_DELETE = 'CLEAR_DELETE';

@@ -1,4 +1,11 @@
-import { ADD_POST, GET_POST, GET_POSTS, POST_LOADING, RESET_TEXT } from "../actions/types";
+import {
+    ADD_POST,
+    DELETE_POST,
+    GET_POST,
+    GET_POSTS,
+    POST_LOADING,
+    RESET_TEXT,
+} from "../actions/types";
 
 const initialState = {
     loading: false,
@@ -20,6 +27,12 @@ export default function (state = initialState, action) {
                 loading: true,
             };
         case GET_POST:
+            for (let i = 0; i < state.posts.length; i++) {
+                if (state.posts[i]._id === action.payload._id) {
+                    state.posts[i] = action.payload;
+                    break;
+                }
+            }
             return {
                 ...state,
                 post: action.payload,
@@ -35,6 +48,11 @@ export default function (state = initialState, action) {
                 ...state,
                 resetText: action.payload,
                 loading: false,
+            };
+        case DELETE_POST:
+            return {
+                ...state,
+                posts: state.posts.filter(post => post._id !== action.payload)
             };
         default:
             return state;

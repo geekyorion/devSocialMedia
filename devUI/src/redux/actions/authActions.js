@@ -55,5 +55,7 @@ export const logoutUser = (history) => dispatch => {
     // remove current user
     dispatch(setCurrentUser({}));
     // navigate to the login page
-    history.push('/login');
+    if (history && history.push) {
+        history.push('/login');
+    }
 };

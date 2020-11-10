@@ -11,7 +11,6 @@ const Posts = () => {
     const { loading, posts } = useSelector(state => state.post);
     const processing = useSelector(state => state.processing.processing);
 
-    const [renderPost, setRenderPost] = useState([]);
     const [userPost, setUserPost] = useState(false);
 
     useEffect(() => {
@@ -22,10 +21,6 @@ const Posts = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userPost]);
-
-    useEffect(() => {
-        setRenderPost(posts);
-    }, [posts]);
 
     useEffect(() => {
         document.title = 'Dev Social Media : Feed';
@@ -57,7 +52,7 @@ const Posts = () => {
                             </div>
                         </div>
                         <div className="div-relative">
-                            {loading ? <Spinner position="absolute" /> : <PostFeed posts={renderPost} />}
+                            {loading ? <Spinner position="absolute" /> : <PostFeed posts={posts} />}
                         </div>
                     </div>
                 </div>
