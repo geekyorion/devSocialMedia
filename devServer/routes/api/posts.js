@@ -121,6 +121,48 @@ router.delete('/:post_id', passport.authenticate('jwt', { session: false }), (re
 });
 
 /**
+ * @route               POST api/post/edit/:post_id
+ * @description         edit a post
+ * @access              private
+ */
+router.post('/edit/:post_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    req.body = sanitize(req.body);
+    let errors = {}, isValid = false;
+    try {
+        const result = validatePostInput(req.body);
+        errors = result.errors;
+        isValid = result.isValid;
+    } catch (err) {
+        res.status(401).json({ invalid: "Invalid data input" });
+    }
+
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    // check whether user is available or not
+    Profile.findOne({ user: req.user.id })
+        .then(profile => {
+            Post.findById(sanitize(req.params.post_id))
+                .then(post => {
+                    // check for the owner of the post
+                    if (post.user.toString() !== req.user.id) {
+                        return res.status(401).json({ notAuthorised: "User not authorized" });
+                    }
+
+                    // edit the text and save the post
+                    post.text = req.body.text;
+                    post
+                        .save()
+                        .then(() => res.json(post))
+                        .catch(err => res.status(400).json({ unableToEdit: "Unable to delete the post" }));
+                })
+                .catch(err => res.status(404).json({ nopost: "Post is not available" }));
+        })
+        .catch(err => res.status(404).json({ nopost: "Post is not available" }));
+});
+
+/**
  * @route               POST api/post/like/:post_id
  * @description         like a post
  * @access              private

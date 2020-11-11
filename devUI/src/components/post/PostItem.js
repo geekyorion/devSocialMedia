@@ -64,24 +64,26 @@ const PostItem = ({ post, userID, showPostActions }) => {
                                 <i className="text-light fas fa-comments"></i>
                                 <span className="badge badge-dark"> {post.comments.length}</span>
                             </Link>
-                            <Link
-                                to={`/edit-post/${post._id}`}
-                                className="btn btn-dark mr-1 btn-sm"
-                                data-toggle="tooltip"
-                                title="Edit"
-                            >
-                                <i className="text-light far fa-edit"></i>
-                            </Link>
                             {(userID === post.user) && (
-                                <button
-                                    type="button"
-                                    className="btn btn-danger mr-1 btn-sm"
-                                    onClick={handleDelete}
-                                    data-toggle="modal"
-                                    data-target="#deleteRecord"
-                                >
-                                    <i className="fas fa-times" />
-                                </button>
+                                <>
+                                    <Link
+                                        to={`/edit-post/${post._id}`}
+                                        className="btn btn-dark mr-1 btn-sm"
+                                        data-toggle="tooltip"
+                                        title="Edit"
+                                    >
+                                        <i className="text-light far fa-edit"></i>
+                                    </Link>
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger mr-1 btn-sm"
+                                        onClick={handleDelete}
+                                        data-toggle="modal"
+                                        data-target="#deleteRecord"
+                                    >
+                                        <i className="fas fa-times" />
+                                    </button>
+                                </>
                             )}
                         </div>
                     )}

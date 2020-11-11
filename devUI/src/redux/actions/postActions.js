@@ -213,6 +213,31 @@ export const deleteUserComment = (params) => dispatch => {
         });
 };
 
+export const editUserPost = (postData, postID, history) => dispatch => {
+    axios
+        .post(`/api/post/edit/${postID}`, postData)
+        .then(res => {
+            dispatch({
+                type: GET_POST,
+                payload: res.data
+            });
+            emitToaster({
+                toastText: 'Post is successfully updated',
+                type: 'success'
+            });
+            if (history && history.push) {
+                history.push('/feed');
+            }
+        })
+        .catch(err => {
+            emitToaster({
+                toastText: err.response.data.nopost || err.response.data.notAuthorised || 'Unable to edit the post',
+                type: 'error'
+            });
+            dispatch(setErrors(err.response.data));
+        });
+};
+
 export const startPostLoading = () => ({
     type: POST_LOADING
 });
