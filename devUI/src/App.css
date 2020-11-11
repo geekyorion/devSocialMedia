@@ -119,3 +119,9 @@ img {
     color: #0005;
     text-shadow: 0 0 10px black;
 }
+
+.time-stamp {
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+}

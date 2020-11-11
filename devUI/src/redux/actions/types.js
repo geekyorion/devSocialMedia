@@ -22,6 +22,9 @@ export const GET_POSTS = 'GET_POSTS';
 export const ADD_POST = 'ADD_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const RESET_TEXT = 'RESET_TEXT';
+export const REPLACE_POST = 'REPLACE_POST';
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
 
 // for delete actions
 export const INIT_DELETE = 'INIT_DELETE';

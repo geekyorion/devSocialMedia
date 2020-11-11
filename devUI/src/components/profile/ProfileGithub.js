@@ -17,8 +17,12 @@ const ProfileGithub = ({ username }) => {
         fetch(`https://api.github.com/users/${username}/repos?per_page=${options.repoCount}&sort=${options.sort}`)
             .then(res => res.json())
             .then(repos => {
-                setError('');
-                setRepos(repos);
+                if (repos && !isEmpty(repos.message)) {
+                    setError('');
+                    setRepos([]);
+                } else {
+                    setRepos(repos);
+                }
             })
             .catch(_err => {
                 setError('Unable to get GitHub repos');
@@ -30,8 +34,8 @@ const ProfileGithub = ({ username }) => {
     return (
         <div className="col-12 mt-3">
             <h3 className="mb-2 text-info text-center">Latest Github Repos</h3>
-            {isEmpty(repos) || !isEmpty(error) ? (
-                <p className="text-center lead">{error || 'This user has no public repositories'}</p>
+            {isEmpty(repos) ? (
+                <p className="text-center lead">{error || 'This user doesn’t have any public repositories yet.'}</p>
             ) : (
                     repos.map(repo => (
                         <div key={repo.id} className="card card-body mb-2">

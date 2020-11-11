@@ -7,6 +7,7 @@ import {
     GET_POST,
     GET_POSTS,
     POST_LOADING,
+    REPLACE_POST,
     RESET_TEXT
 } from './types';
 
@@ -52,7 +53,7 @@ export const getAllPosts = () => dispatch => {
                 payload: []
             });
             emitToaster({
-                toastText: (err.response.data && err.response.data.nopost) || 'Unalbe to get posts',
+                toastText: (err.response.data && err.response.data.nopost) || 'Unable to get posts',
                 type: 'error'
             });
         });
@@ -74,7 +75,7 @@ export const getUserPosts = () => dispatch => {
                 payload: []
             });
             emitToaster({
-                toastText: (err.response.data && err.response.data.nopost) || 'Unalbe to get posts',
+                toastText: (err.response.data && err.response.data.nopost) || 'Unable to get posts',
                 type: 'error'
             });
         });
@@ -102,18 +103,28 @@ export const deleteUserPost = (id) => dispatch => {
         });
 };
 
-export const fetchPostAgain = (id) => dispatch => {
+export const fetchSinglePost = (id, dispatchType = null, history) => dispatch => {
+    if (dispatchType === null) {
+        dispatch(startPostLoading());
+    }
     axios
-        .get(`api/post/${id}`)
+        .get(`/api/post/${id}`)
         .then(res => {
             dispatch({
-                type: GET_POST,
+                type: dispatchType === 'replace' ? REPLACE_POST : GET_POST,
                 payload: res.data
             });
         })
         .catch(err => {
+            if (history && history.push) {
+                history.push('/feed');
+            }
+            dispatch({
+                type: GET_POST,
+                payload: {}
+            });
             emitToaster({
-                toastText: err.response.data.nopost || 'Unable to fetch post again',
+                toastText: err.response.data.nopost || 'Unable to fetch post',
                 type: 'error'
             });
         });
@@ -121,9 +132,9 @@ export const fetchPostAgain = (id) => dispatch => {
 
 export const addPostLike = (id) => dispatch => {
     axios
-        .post(`api/post/like/${id}`)
+        .post(`/api/post/like/${id}`)
         .then(_res => {
-            dispatch(fetchPostAgain(id));
+            dispatch(fetchSinglePost(id, 'replace'));
         })
         .catch(err => {
             dispatch({
@@ -131,7 +142,7 @@ export const addPostLike = (id) => dispatch => {
                 payload: {}
             });
             emitToaster({
-                toastText: (err.response.data.alreadyLiked) || 'Unalbe to like the post',
+                toastText: (err.response.data.alreadyLiked) || 'Unable to like the post',
                 type: 'error'
             });
         });
@@ -139,9 +150,9 @@ export const addPostLike = (id) => dispatch => {
 
 export const removePostLike = (id) => dispatch => {
     axios
-        .post(`api/post/unlike/${id}`)
+        .post(`/api/post/unlike/${id}`)
         .then(_res => {
-            dispatch(fetchPostAgain(id));
+            dispatch(fetchSinglePost(id, 'replace'));
         })
         .catch(err => {
             dispatch({
@@ -149,9 +160,56 @@ export const removePostLike = (id) => dispatch => {
                 payload: {}
             });
             emitToaster({
-                toastText: (err.response.data.notLiked) || 'Unalbe to unlike the post',
+                toastText: (err.response.data.notLiked) || 'Unable to unlike the post',
                 type: 'error'
             });
+        });
+};
+
+export const addComment = (commentData, id) => dispatch => {
+    axios
+        .post(`/api/post/comment/${id}`, commentData)
+        .then(res => {
+            dispatch({
+                type: GET_POST,
+                payload: res.data
+            });
+            emitToaster({
+                toastText: 'Your commnet is added successfully',
+                type: 'success'
+            });
+            dispatch(setResetText(true));
+            dispatch(clearErrors());
+        })
+        .catch(err => {
+            emitToaster({
+                toastText: (err.response.data && err.response.data.commentError) || 'Unable to save comment',
+                type: 'error'
+            });
+            dispatch(setErrors(err.response.data));
+            dispatch(setResetText(false));
+        });
+};
+
+export const deleteUserComment = (params) => dispatch => {
+    axios
+        .delete(`/api/post/comment/${params.postID}/${params.commentID}`)
+        .then(res => {
+            dispatch({
+                type: GET_POST,
+                payload: res.data
+            });
+            emitToaster({
+                toastText: 'Your commnet is added successfully',
+                type: 'success'
+            });
+        })
+        .catch(err => {
+            emitToaster({
+                toastText: err.response.data.commentDeleteError || err.response.data.notAuthorised || 'Unable to delete comment',
+                type: 'error'
+            });
+            dispatch(setErrors(err.response.data));
         });
 };
 

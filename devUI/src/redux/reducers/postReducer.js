@@ -4,6 +4,7 @@ import {
     GET_POST,
     GET_POSTS,
     POST_LOADING,
+    REPLACE_POST,
     RESET_TEXT,
 } from "../actions/types";
 
@@ -26,16 +27,19 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: true,
             };
-        case GET_POST:
+        case REPLACE_POST:
             for (let i = 0; i < state.posts.length; i++) {
                 if (state.posts[i]._id === action.payload._id) {
                     state.posts[i] = action.payload;
                     break;
                 }
             }
+            return { ...state };
+        case GET_POST:
             return {
                 ...state,
                 post: action.payload,
+                loading: false
             };
         case GET_POSTS:
             return {

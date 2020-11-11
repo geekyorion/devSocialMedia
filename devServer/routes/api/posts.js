@@ -209,8 +209,8 @@ router.post('/comment/:post_id', passport.authenticate('jwt', { session: false }
         .then(post => {
             const newComment = {
                 text: req.body.text,
-                name: req.body.name,
-                avatar: req.body.avatar,
+                name: req.user.name,
+                avatar: req.user.avatar,
                 user: req.user.id
             }
 
