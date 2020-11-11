@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/devSocialMedia/static/css/main.696abd36.chunk.css",
-    "main.js": "/devSocialMedia/static/js/main.29204b46.chunk.js",
+    "main.js": "/devSocialMedia/static/js/main.0a44b4f4.chunk.js",
     "runtime-main.js": "/devSocialMedia/static/js/runtime-main.e9eacde3.js",
     "static/css/2.7b9c825f.chunk.css": "/devSocialMedia/static/css/2.7b9c825f.chunk.css",
-    "static/js/2.f238fee4.chunk.js": "/devSocialMedia/static/js/2.f238fee4.chunk.js",
+    "static/js/2.a71b77eb.chunk.js": "/devSocialMedia/static/js/2.a71b77eb.chunk.js",
     "index.html": "/devSocialMedia/index.html",
-    "precache-manifest.513997664aa6f37d668f47bb094301e7.js": "/devSocialMedia/precache-manifest.513997664aa6f37d668f47bb094301e7.js",
+    "precache-manifest.ce0acaf4a5a45ca63f13e85066dd2b73.js": "/devSocialMedia/precache-manifest.ce0acaf4a5a45ca63f13e85066dd2b73.js",
     "service-worker.js": "/devSocialMedia/service-worker.js",
-    "static/js/2.f238fee4.chunk.js.LICENSE.txt": "/devSocialMedia/static/js/2.f238fee4.chunk.js.LICENSE.txt",
+    "static/js/2.a71b77eb.chunk.js.LICENSE.txt": "/devSocialMedia/static/js/2.a71b77eb.chunk.js.LICENSE.txt",
     "static/media/App.css": "/devSocialMedia/static/media/showcase.4b31330b.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.e9eacde3.js",
     "static/css/2.7b9c825f.chunk.css",
-    "static/js/2.f238fee4.chunk.js",
+    "static/js/2.a71b77eb.chunk.js",
     "static/css/main.696abd36.chunk.css",
-    "static/js/main.29204b46.chunk.js"
+    "static/js/main.0a44b4f4.chunk.js"
   ]
 }
