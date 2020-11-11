@@ -62,7 +62,7 @@ app.all('*', (req, res) => {
     res.status(404).json({ routeError: 'Not a valid route' });
 });
 
-const port = process.env.port || 5000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
