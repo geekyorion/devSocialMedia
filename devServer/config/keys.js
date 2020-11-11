@@ -1,4 +1,5 @@
-module.exports = {
-    mongoURI: '<MongoDB URI string for connection>',
-    secretOrKey: '<secret string for JWT token>',
-};
+if (process.env.NODE_ENV === 'production') {
+    module.exports = require('./keys_prod');
+} else {
+    module.exports = require('./keys_dev');
+}

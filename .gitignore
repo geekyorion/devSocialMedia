@@ -105,3 +105,6 @@ dist
 
 # ignore react build
 build/
+
+# ignore the key_dev file
+*/config/keys_dev.js
