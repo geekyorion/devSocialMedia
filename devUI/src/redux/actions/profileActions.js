@@ -1,14 +1,15 @@
-import axios from 'axios';
+// import axios from 'axios';
 import emitToaster from '../../utils/alert';
 
 import { clearErrors, setErrors } from './errorsAction';
 import { CLEAR_PROFILE, GET_ALL_PROFILES, GET_PROFILE, PROFILE_LOADING } from './types';
 import { logoutUser } from './authActions';
+import axiosAPI from '../../utils/axiosApiEndPoint';
 
 // get current profile
 export const getCurrentProfile = () => dispatch => {
     dispatch(setProfileLoading());
-    axios
+    axiosAPI
         .get('/api/profile/')
         .then(res => dispatch({
             type: GET_PROFILE,
@@ -30,7 +31,7 @@ export const getCurrentProfile = () => dispatch => {
 
 // create user's profile
 export const createUserProfile = (profileData, history, type = 'created') => dispatch => {
-    axios
+    axiosAPI
         .post('/api/profile/', profileData)
         .then(_res => {
             emitToaster({
@@ -51,7 +52,7 @@ export const createUserProfile = (profileData, history, type = 'created') => dis
 
 // add experience
 export const addExperience = (expData, history) => dispatch => {
-    axios
+    axiosAPI
         .post('/api/profile/experience', expData)
         .then(res => {
             history.push('/dashboard');
@@ -72,7 +73,7 @@ export const addExperience = (expData, history) => dispatch => {
 
 // update an experience
 export const updateExperience = (expData, history) => dispatch => {
-    axios
+    axiosAPI
         .put(`/api/profile/experience/${expData.id}`, expData)
         .then(res => {
             history.push('/dashboard');
@@ -93,7 +94,7 @@ export const updateExperience = (expData, history) => dispatch => {
 
 // delete user experience
 export const deleteUserExperience = (id) => dispatch => {
-    axios
+    axiosAPI
         .delete(`/api/profile/experience/${id}`)
         .then(res => {
             dispatch({
@@ -116,7 +117,7 @@ export const deleteUserExperience = (id) => dispatch => {
 
 // add education
 export const addEducation = (eduData, history) => dispatch => {
-    axios
+    axiosAPI
         .post('/api/profile/education', eduData)
         .then(res => {
             history.push('/dashboard');
@@ -137,7 +138,7 @@ export const addEducation = (eduData, history) => dispatch => {
 
 // update an education
 export const updateEducation = (eduData, history) => dispatch => {
-    axios
+    axiosAPI
         .put(`/api/profile/education/${eduData.id}`, eduData)
         .then(res => {
             history.push('/dashboard');
@@ -158,7 +159,7 @@ export const updateEducation = (eduData, history) => dispatch => {
 
 // delete user education
 export const deleteUserEducation = (id) => dispatch => {
-    axios
+    axiosAPI
         .delete(`/api/profile/education/${id}`)
         .then(res => {
             dispatch({
@@ -181,7 +182,7 @@ export const deleteUserEducation = (id) => dispatch => {
 
 // delete user profile
 export const deleteUserProfile = () => dispatch => {
-    axios
+    axiosAPI
         .delete('/api/profile')
         .then(_res => {
             dispatch(logoutUser());
@@ -202,7 +203,7 @@ export const deleteUserProfile = () => dispatch => {
 // get all users profile
 export const getAllProfiles = () => dispatch => {
     dispatch(setProfileLoading());
-    axios
+    axiosAPI
         .get('/api/profile/all')
         .then(res => {
             dispatch({
@@ -225,7 +226,7 @@ export const getAllProfiles = () => dispatch => {
 // get user profile by handle
 export const getProfileByHandle = (handle, history) => dispatch => {
     dispatch(setProfileLoading());
-    axios
+    axiosAPI
         .get(`/api/profile/handle/${handle}`)
         .then(res => {
             dispatch({
@@ -247,7 +248,7 @@ export const getProfileByHandle = (handle, history) => dispatch => {
 }
 
 export const refreshGravatar = () => dispatch => {
-    axios
+    axiosAPI
         .get('/api/user/gravatar')
         .then(res => {
             dispatch(getCurrentProfile());

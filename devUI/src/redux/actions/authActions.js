@@ -1,13 +1,14 @@
-import axios from 'axios';
+// import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import emitToaster from '../../utils/alert';
 
 import setAuthToken from '../../utils/setAuthToken';
 import { clearErrors, setErrors } from './errorsAction';
 import { SET_CURRENT_USER } from './types';
+import axiosAPI from '../../utils/axiosApiEndPoint';
 
 export const registerUser = (userData, history) => dispatch => {
-    axios
+    axiosAPI
         .post('/api/user/register', userData)
         .then(_res => {
             history.push('/login');
@@ -21,7 +22,7 @@ export const registerUser = (userData, history) => dispatch => {
 }
 
 export const loginUser = (userData) => dispatch => {
-    axios
+    axiosAPI
         .post('/api/user/login', userData)
         .then(res => {
             // extract the token from response

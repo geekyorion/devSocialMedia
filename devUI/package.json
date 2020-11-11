@@ -42,7 +42,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://dev-social-media-server.herokuapp.com/",
   "devDependencies": {
     "gh-pages": "^3.1.0"
   }

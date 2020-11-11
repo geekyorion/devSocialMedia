@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
+import axiosAPI from '../../utils/axiosApiEndPoint';
 import emitToaster from '../../utils/alert';
 import { logoutUser } from '../../redux/actions/authActions';
 
@@ -14,7 +15,7 @@ const PrivateRoute = ({
     const authState = useSelector(state => state.auth);
 
     const authenticateToken = () => {
-        axios
+        axiosAPI
             .get('/api/user/verify')
             .then(res => {
                 if (res.data.verified !== true) {

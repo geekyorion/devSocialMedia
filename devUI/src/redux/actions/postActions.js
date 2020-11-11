@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import emitToaster from '../../utils/alert';
 import { clearErrors, setErrors } from './errorsAction';
 import {
@@ -10,10 +10,11 @@ import {
     REPLACE_POST,
     RESET_TEXT
 } from './types';
+import axiosAPI from '../../utils/axiosApiEndPoint';
 
 export const addPost = postData => dispatch => {
     dispatch(startPostLoading());
-    axios
+    axiosAPI
         .post('/api/post', postData)
         .then(res => {
             dispatch({
@@ -39,7 +40,7 @@ export const addPost = postData => dispatch => {
 
 export const getAllPosts = () => dispatch => {
     dispatch(startPostLoading());
-    axios
+    axiosAPI
         .get('/api/post')
         .then(res => {
             dispatch({
@@ -61,7 +62,7 @@ export const getAllPosts = () => dispatch => {
 
 export const getUserPosts = () => dispatch => {
     dispatch(startPostLoading());
-    axios
+    axiosAPI
         .get('/api/post/user')
         .then(res => {
             dispatch({
@@ -82,7 +83,7 @@ export const getUserPosts = () => dispatch => {
 };
 
 export const deleteUserPost = (id) => dispatch => {
-    axios
+    axiosAPI
         .delete(`/api/post/${id}`)
         .then(res => {
             dispatch({
@@ -107,7 +108,7 @@ export const fetchSinglePost = (id, dispatchType = null, history) => dispatch =>
     if (dispatchType === null) {
         dispatch(startPostLoading());
     }
-    axios
+    axiosAPI
         .get(`/api/post/${id}`)
         .then(res => {
             dispatch({
@@ -131,7 +132,7 @@ export const fetchSinglePost = (id, dispatchType = null, history) => dispatch =>
 };
 
 export const addPostLike = (id) => dispatch => {
-    axios
+    axiosAPI
         .post(`/api/post/like/${id}`)
         .then(_res => {
             dispatch(fetchSinglePost(id, 'replace'));
@@ -149,7 +150,7 @@ export const addPostLike = (id) => dispatch => {
 };
 
 export const removePostLike = (id) => dispatch => {
-    axios
+    axiosAPI
         .post(`/api/post/unlike/${id}`)
         .then(_res => {
             dispatch(fetchSinglePost(id, 'replace'));
@@ -167,7 +168,7 @@ export const removePostLike = (id) => dispatch => {
 };
 
 export const addComment = (commentData, id) => dispatch => {
-    axios
+    axiosAPI
         .post(`/api/post/comment/${id}`, commentData)
         .then(res => {
             dispatch({
@@ -192,7 +193,7 @@ export const addComment = (commentData, id) => dispatch => {
 };
 
 export const deleteUserComment = (params) => dispatch => {
-    axios
+    axiosAPI
         .delete(`/api/post/comment/${params.postID}/${params.commentID}`)
         .then(res => {
             dispatch({
@@ -214,7 +215,7 @@ export const deleteUserComment = (params) => dispatch => {
 };
 
 export const editUserPost = (postData, postID, history) => dispatch => {
-    axios
+    axiosAPI
         .post(`/api/post/edit/${postID}`, postData)
         .then(res => {
             dispatch({
