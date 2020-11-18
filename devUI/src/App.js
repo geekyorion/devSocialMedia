@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import jwt_decode from 'jwt-decode';
 import { ToastContainer } from 'react-toastify';
@@ -45,7 +45,7 @@ if (localStorage.authToken) {
 function App() {
     return (
         <Provider store={store}>
-            <BrowserRouter basename={process.env.PUBLIC_URL}>
+            <HashRouter basename={process.env.PUBLIC_URL} hashType="slash">
                 <div className="wrapper">
                     <Navbar />
                     <div className="App">
@@ -55,7 +55,7 @@ function App() {
                     <ToastContainer />
                     <DeleteRecord />
                 </div>
-            </BrowserRouter>
+            </HashRouter>
         </Provider>
     );
 }
