@@ -176,7 +176,7 @@ export const addComment = (commentData, id) => dispatch => {
                 payload: res.data
             });
             emitToaster({
-                toastText: 'Your commnet is added successfully',
+                toastText: 'Your comment is added successfully',
                 type: 'success'
             });
             dispatch(setResetText(true));
@@ -201,7 +201,7 @@ export const deleteUserComment = (params) => dispatch => {
                 payload: res.data
             });
             emitToaster({
-                toastText: 'Your commnet is added successfully',
+                toastText: 'Your comment is deleted successfully',
                 type: 'success'
             });
         })
